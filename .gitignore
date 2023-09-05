@@ -1,0 +1,10 @@
+/node_modules
+/src/config.js
+package-lock.json
+./src/config.js
+/src/careerConfig.js
+./src/careerConfig.js
+.env
+./_ProductAndServices
+src/server.js
+jobEmployerCandidateMonthlyStats.json
