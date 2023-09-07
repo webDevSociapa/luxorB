@@ -8,8 +8,7 @@ export default {
     secretKey: '',
 
     dbConnection: {
-        //  host: '13.127.219.36',
-        //  password : 'fkdsahfusdbfjgsfhvsdfgadkfsoigfhsavfihwedwegruiqhewfub' ,
+      
         "user":"skntmax", 
         host: 'localhost',
        password: 'sknt987',
