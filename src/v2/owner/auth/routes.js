@@ -46,8 +46,6 @@ owner_router.post('/login' , (req, res )=>{
      model.email = req.body.email
      model.password = req.body.password
 
-
-
     for(const key in model ) {
        if(model[key]=="") { 
           return  res.send(fail_service_response({message:`please fill ${key}`}))
@@ -55,7 +53,8 @@ owner_router.post('/login' , (req, res )=>{
     }
 
        
-    newOwnerLogin(model).then((result)=>{           
+    newOwnerLogin(model).then((result)=>{ 
+                 
         res.send(succes_service_response(result)) 
 
     }).catch(err=>{

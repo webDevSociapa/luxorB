@@ -1,5 +1,7 @@
 import ownerModel from "../../../models/owner.js"
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
 
 export async function newOwnerSignup(model) {
     try{    
@@ -39,7 +41,7 @@ export async function newOwnerLogin(model) {
            } else {
                 const { _id, first_name, last_name, email , password:hasspass } = temp_user
                   
-                    let isMathc=await bcrypt.compare(password , hasspass)
+                    let isMathc=await bcrypt.compare( password , hasspass)
                      if(isMathc) {
                         let token =  jwt.sign({ _id }, process.env.OWNER_PRIVATE_KEY )
                         return Promise.resolve({ first_name , last_name, email , token  }) 

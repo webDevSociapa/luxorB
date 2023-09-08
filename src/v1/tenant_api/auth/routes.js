@@ -34,6 +34,7 @@ tenant_router.post('/signup' , (req, res )=>{
 tenant_router.post('/login' , (req, res )=>{
  
      
+     
      let model = { }
      model.email = req.body.email
      model.password = req.body.password
