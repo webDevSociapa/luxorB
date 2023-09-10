@@ -7,6 +7,9 @@ let categorySchema = new Schema({
      residential_house:Boolean 
 }) 
 
+
+let category_detail = mongoose.model(collection.rg_global_master_owner_category ,categorySchema )
+ 
 let ownerSchema = new  mongoose.Schema({
      boys:Boolean ,
      girls:Boolean,
@@ -39,8 +42,7 @@ let ownerSchema = new  mongoose.Schema({
     created_on:{
         type:Date ,
          default:()=> new Date()
-    } ,
-     
+    } , 
     updated_on:{
         type:Date ,    
     }
@@ -48,6 +50,9 @@ let ownerSchema = new  mongoose.Schema({
 })
  
 
+ 
+
 let ownerModel = mongoose.model(collection.rg_global_master_owner_detail ,ownerSchema  ) 
 
+export  {category_detail}
 export default ownerModel

@@ -11,7 +11,7 @@ export async function newOwnerSignup(model) {
            if(temp_user!=null ) {
                  return Promise.resolve("owner already registered")
             }else{
-
+                 
                     let has_pass = await bcrypt.hash(password , 5  )
                     let new_user =new ownerModel({ first_name ,  last_name ,  email , phone, boys, girls, any , property_type ,  password:has_pass })
                      await new_user.save()
