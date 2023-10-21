@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon   --experimental-modules --es-module-specifier-resolution=node ./src/server.js ",
-    "prod": "node --experimental-modules --es-module-specifier-resolution=node ./src/server.js "
+    "dev": "nodemon   ./src/server.js ",
+    "prod": "nodemon ./src/server.js "
   },
   "keywords": [],
   "author": "",
