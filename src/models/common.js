@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import collection from './../collection/collection.js'
+
  
 let bhk_types_schema = new Schema({
      one_bhk:Boolean ,
