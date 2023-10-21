@@ -1,32 +1,26 @@
 import express from 'express'
 import 'dotenv/config'
 import config from './config.js'
-import { initDb } from './connection/db_connect.js'
-import tenant_model from './models/tenant.js'
-import path , { dirname } from 'path';
+import { initDb } from './connection/connect.js' 
+import prdRouter from './v1/products/route.js'
+import bodyParser from 'body-parser'
+import path ,{ dirname } from 'path'
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import { ownerRouteMiddleware, tennatRouteMiddleware } from './middlwares/globalmiddleware.js'
-import bodyParser from 'body-parser'
-let app = express()
 
+const app = express()
+initDb()
 app.use(express.static(path.join(__dirname , "")))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-let port = process.env.PORT || config.port 
+app.use('/v1', prdRouter )
 
-initDb()
-tennatRouteMiddleware(app)
-ownerRouteMiddleware(app)
-
-app.get('/' , (req, res )=>{
-     res.render('index.html')
+app.get('/' ,(req, res)=>{
+    res.send({ msg:"hi"})
 })
- 
 
- 
-app.listen(port , ()=>{
-     console.log(`server started at ${port}`)
+app.listen(config.port , ()=>{
+     console.log("serve started at ",config.port )
 })

@@ -1,10 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
 /node_modules
-/src/config.js
-package-lock.json
-./src/config.js
-/src/careerConfig.js
-./src/careerConfig.js
-.env
-./_ProductAndServices
-src/server.js
-jobEmployerCandidateMonthlyStats.json
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

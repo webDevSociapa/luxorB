@@ -1,14 +1,14 @@
 
+import dotenv from './dotenv.js'
 export default {
     //  port: 9009,
-    port: 9999,
+    port: dotenv.PORT,
     allowedOrigin: ['*'],
-     db_url: 'mongodb+srv://skntmax:sknt987@cluster0.rosw1y7.mongodb.net/bc-cave',
+     db_url: `mongodb+srv://skntmax:sknt987@cluster0.rosw1y7.mongodb.net/${dotenv.DB}`,
 
     secretKey: '',
 
-    dbConnection: {
-      
+    dbConnection: {      
         "user":"skntmax", 
         host: 'localhost',
        password: 'sknt987',
