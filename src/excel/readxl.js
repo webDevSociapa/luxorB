@@ -4,12 +4,10 @@ import xlsx from 'node-xlsx';
 import fs from 'fs'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { Products ,heighlighter } from './../models/products.js';
+import { MainCatProductModel, Products ,heighlighter   } from './../models/products.js';
+import { categoryProductModel } from '../models/common.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-
-
-
 
 
 xl.get('/read-and-store' ,(req, res)=>{
@@ -20,7 +18,6 @@ const workSheetsFromBuffer = xlsx.parse(fs.readFileSync(`${__dirname}/luxer_pen_
 const workSheetsFromFile = xlsx.parse(`${__dirname}/luxer_pen_data.xlsx`);
 
 // console.log(workSheetsFromFile , )
-
 
 
 
@@ -82,42 +79,123 @@ let model = {
 
 
 
-
-
-
-
-// markers 
-workSheetsFromFile[1].data.map((ele ,i, ar)=>{
-
+// // heighlighters 
+// workSheetsFromFile[1].data.map((ele ,i, ar)=>{
  
-      //  ele.map((item , ind , arr )=>{
+//       //  ele.map((item , ind , arr )=>{
           
-      //            if(  arr[ind]=="Pens - Metal Pens " ) {
-      //                model['category_type'] = '6537d22343346433a3754325' 
-      //             }   else if( arr[ind]=="Pens - Everyday Writing ") {
-      //                model['category_type'] = '6537d24c6c7d38d8e947c8fa'
-      //             }
+//       //            if(  arr[ind]=="Pens - Metal Pens " ) {
+//       //                model['category_type'] = '6537d22343346433a3754325' 
+//       //             }   else if( arr[ind]=="Pens - Everyday Writing ") {
+//       //                model['category_type'] = '6537d24c6c7d38d8e947c8fa'
+//       //             }
 
-             
-      //    })
-
+//       //    })
 
       
-       if(ar[i].length>0){
+//        if(ar[i].length>0){
          
-                 // console.log(ar[i])
-                 model["name"]=ar[i][0],  
-                 model["description"]=ar[i][1] ,
-                 model["icon"]=ar[i][2],
-                 model["did_you_know"]=ar[i][3]
-                 model['created_on'] = new Date()
-                 model['color'] = "all color"
+//                  // console.log(ar[i])
+//                  model["name"]=ar[i][0],  
+//                  model["description"]=ar[i][1] ,
+//                  model["icon"]=ar[i][2],
+//                  model["did_you_know"]=ar[i][3]
+//                  model['created_on'] = new Date()
+//                  model['color'] = "all color"
                  
-               //   console.log(model)
-                  // finnal_arr.push(model)
-                  storeHeighlighter(model)          
-             }
+//                //   console.log(model)
+//                // finnal_arr.push(model)
+                
+//                   storeHeighlighter(model)          
+//              }
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+// // arts and hobby  
+// workSheetsFromFile[2].data.map((ele ,i, ar)=>{
+ 
+//    //  ele.map((item , ind , arr )=>{
+       
+//    //            if(  arr[ind]=="Pens - Metal Pens " ) {
+//    //                model['category_type'] = '6537d22343346433a3754325' 
+//    //             }   else if( arr[ind]=="Pens - Everyday Writing ") {
+//    //                model['category_type'] = '6537d24c6c7d38d8e947c8fa'
+//    //             }
+
+//    //    })
+
+   
+//     if(ar[i].length>0){
+
+//               // console.log(ar[i])
+//               model["name"]=ar[i][0],  
+//               model["description"]=ar[i][1] ,
+//               model["icon"]=ar[i][2],
+//               model["did_you_know"]=ar[i][3]
+//               model['created_on'] = new Date()
+//               model['color'] = "all color"
+//               model['product_cat_type'] = '653911ce6d8ae7473f9325a7'
+//             //   console.log(model)
+//             // finnal_arr.push(model)
+//              console.log("saved",i+1)
+//              storeAllProductsCatWise(model)          
+//           }
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+// PCW -3 , echo-write-4 ,  stationary - 5
+workSheetsFromFile[5].data.map((ele ,i, ar)=>{
+ 
+   //  ele.map((item , ind , arr )=>{
+       
+   //            if(  arr[ind]=="Pens - Metal Pens " ) {
+   //                model['category_type'] = '6537d22343346433a3754325' 
+   //             }   else if( arr[ind]=="Pens - Everyday Writing ") {
+   //                model['category_type'] = '6537d24c6c7d38d8e947c8fa'
+   //             }
+
+   //    })
+
+   
+    if(ar[i].length>0){
+
+              // console.log(ar[i])
+              model["name"]=ar[i][0],  
+              model["description"]=ar[i][1] ,
+              model["icon"]=ar[i][2],
+              model["did_you_know"]=ar[i][3]
+              model['created_on'] = new Date()
+              model['color'] = "all color"
+              model['product_cat_type'] = '653911fdeb3253e94826bcac'
+            //   console.log(model)
+            // finnal_arr.push(model)
+            console.log(i+1)
+             storeAllProductsCatWise(model)          
+          }
 })
+
+
 
 
 
@@ -135,9 +213,21 @@ async function storeHeighlighter(model){
 console.log("saved ", model )
 }
 
+
+async function storeAllProductsCatWise(model){
+   let inserted = await MainCatProductModel(model)
+           await inserted.save() 
+console.log("saved ", model )
+}
+
+
+
+
+
 res.send({
     msg:"succesfully done"
 })
+ 
 // async function save() {
 
 //   try{
@@ -161,10 +251,30 @@ res.send({
 })
 
 
+
+
+
 // (async function(){
 //     // let inserted = await Products.insertMany(finnal_arr)
      
 // } )()
 
 
+
+xl.get('/insert-category-prd' ,async(req, res)=>{
+
+   let ctg_prd =await categoryProductModel({
+      name:"PCW" ,
+   })
+
+   await ctg_prd.save()
+   console.log("saved")
+
+   res.send({message:ctg_prd})
+
+
+  })
+
+
 export default xl
+

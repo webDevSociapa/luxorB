@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import collection from './../collection/collection.js'
  
 let productCategorySchema  = new Schema({
-     
+
     category:{
      type:String , 
      required:true     
@@ -11,10 +11,9 @@ let productCategorySchema  = new Schema({
      created_on: {
          type: Date ,
          default:()=>  new Date() , 
-     }
-      
-})
+     }      
 
+})
 
 
 let productSchema  = new Schema({
@@ -36,7 +35,6 @@ let productSchema  = new Schema({
 
 
 
-
 let heighlighterSchema  = new Schema({
     name:String,
     color:String ,
@@ -47,27 +45,33 @@ let heighlighterSchema  = new Schema({
        type: Date ,
        default:()=>  new Date() , 
    }
-
 })
 
 
 
-let categoryProductSchema  = new Schema({
+
+
+let productWithProductCategory  = new Schema({
+    product_cat_type:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: collection.rg_global_master_category_product 
+        },
     name:String,
+    description:String ,
+    icon:String ,
+    did_you_know:String ,  
     color:String ,
    created_on: {
        type: Date ,
        default:()=>  new Date() , 
    }
-
 })
 
- 
- 
+
 
 let ProductsCategory = mongoose.model(collection.rg_global_master_category ,productCategorySchema )
 let Products = mongoose.model(collection.rg_global_master_product ,productSchema )
 let heighlighter = mongoose.model(collection.rg_global_master_heighlighter ,heighlighterSchema )
-let category_product = mongoose.model(collection.rg_global_master_category_product ,categoryProductSchema )
+let MainCatProductModel = mongoose.model(collection.rg_global_master_main_cat_wise_product ,productWithProductCategory )
 
-export  {ProductsCategory , Products ,heighlighter ,category_product  }
+export  {ProductsCategory , Products ,heighlighter ,MainCatProductModel   }
