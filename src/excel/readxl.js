@@ -64,18 +64,18 @@ workSheetsFromFile[7].data.map((ele ,i, ar)=>{
                      // finnal_arr.push(model)
                      // store(model)
                      store_markers(model)
-
-                  }
+                    }
                 }
-})
+   })
 
 
 
 
+   
 async function store_markers(model){
-   let inserted = await Makers(model)
+    let inserted = await Makers(model)
            await inserted.save() 
-    console.log("saved ", model )
+     console.log("saved ", model )
 }
 
 
