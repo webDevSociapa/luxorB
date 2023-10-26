@@ -1,8 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import collection from './../collection/collection.js'
  
-let productCategorySchema  = new Schema({
-
+let penCategorySchema  = new Schema({
     category:{
      type:String , 
      required:true     
@@ -12,14 +11,54 @@ let productCategorySchema  = new Schema({
          type: Date ,
          default:()=>  new Date() , 
      }      
-
 })
 
 
-let productSchema  = new Schema({
+
+let productWithProductCategory  = new Schema({
+    product_cat_type:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: collection.rg_global_master_category_product 
+        },
+    name:String,
+    description:String ,
+    icon:String ,
+    did_you_know:String ,  
+    color:String ,
+   created_on: {
+       type: Date ,
+       default:()=>  new Date() , 
+   }
+})
+
+
+let markerCategorySchema  = new Schema({
+    marker_category:{
+        type:String , 
+        required:true     
+        },
+        color:String ,  
+        created_on: {
+            type: Date ,
+            default:()=>  new Date() , 
+        }      
+})
+
+
+
+
+
+
+
+
+
+
+
+
+let penSchema  = new Schema({
       category_type: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: collection.rg_global_master_category
+        ref: collection.rg_global_master_pen_category
        } ,
       name:String,
       color:String ,
@@ -50,17 +89,16 @@ let heighlighterSchema  = new Schema({
 
 
 
-
-let productWithProductCategory  = new Schema({
-    product_cat_type:{
+let MarkersSchema  = new Schema({
+    marker_category_type: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: collection.rg_global_master_category_product 
-        },
+        ref: collection.rg_global_master_marker_category
+       } ,
     name:String,
-    description:String ,
-    icon:String ,
-    did_you_know:String ,  
     color:String ,
+   description:String ,
+   icon:String ,
+   did_you_know:String ,  
    created_on: {
        type: Date ,
        default:()=>  new Date() , 
@@ -69,9 +107,17 @@ let productWithProductCategory  = new Schema({
 
 
 
-let ProductsCategory = mongoose.model(collection.rg_global_master_category ,productCategorySchema )
-let Products = mongoose.model(collection.rg_global_master_product ,productSchema )
-let heighlighter = mongoose.model(collection.rg_global_master_heighlighter ,heighlighterSchema )
-let MainCatProductModel = mongoose.model(collection.rg_global_master_main_cat_wise_product ,productWithProductCategory )
 
-export  {ProductsCategory , Products ,heighlighter ,MainCatProductModel   }
+// category schema 
+let ProductsCategory = mongoose.model(collection.rg_global_master_pen_category ,penCategorySchema )
+let MainCatProductModel = mongoose.model(collection.rg_global_master_main_cat_wise_product ,productWithProductCategory )
+let markerCateroyModel = mongoose.model(collection.rg_global_master_marker_category ,markerCategorySchema )
+// category schema 
+
+// their products 
+let Products = mongoose.model(collection.rg_global_master_pen ,penSchema )
+let heighlighter = mongoose.model(collection.rg_global_master_heighlighter ,heighlighterSchema )
+let Makers = mongoose.model(collection.rg_global_master_marker ,MarkersSchema )
+// their products 
+
+export  {ProductsCategory , Products ,heighlighter ,MainCatProductModel ,markerCateroyModel ,Makers    }

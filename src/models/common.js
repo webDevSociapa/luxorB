@@ -1,6 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import collection from './../collection/collection.js'
 
+
+
 let category_product_schema = new Schema({
      name:{
          type:String ,
@@ -11,6 +13,10 @@ let category_product_schema = new Schema({
         default:()=>  new Date() 
     }
 }) 
+
+
+
+
 
 
 let categoryProductModel = mongoose.model(collection.rg_global_master_category_product ,category_product_schema )

@@ -4,7 +4,7 @@ import xlsx from 'node-xlsx';
 import fs from 'fs'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { MainCatProductModel, Products ,heighlighter   } from './../models/products.js';
+import { MainCatProductModel, Makers, Products ,heighlighter, markerCateroyModel   } from './../models/products.js';
 import { categoryProductModel } from '../models/common.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -18,9 +18,6 @@ const workSheetsFromBuffer = xlsx.parse(fs.readFileSync(`${__dirname}/luxer_pen_
 const workSheetsFromFile = xlsx.parse(`${__dirname}/luxer_pen_data.xlsx`);
 
 // console.log(workSheetsFromFile , )
-
-
-
 
 // pens 
  
@@ -39,43 +36,74 @@ let model = {
  let finnal_arr = []
   
 
-// workSheetsFromFile[0].data.map((ele ,i, ar)=>{
+workSheetsFromFile[7].data.map((ele ,i, ar)=>{
 
-//       if( i>0) {
-//           ele.map((item , ind , arr )=>{
+      if( i>0) {
+          ele.map((item , ind , arr )=>{
              
-//                     if(  arr[ind]=="Pens - Metal Pens " ) {
-//                         model['category_type'] = '6537d22343346433a3754325' 
-//                      }   else if( arr[ind]=="Pens - Everyday Writing ") {
-//                         model['category_type'] = '6537d24c6c7d38d8e947c8fa'
-//                      }
-
-                
-//             })
-
-
-//         }
+                    if(  arr[ind]=="Permanent Markers " ) {
+                        model['marker_category_type'] = '65397016d2ea5f856977cf94' 
+                     }   else if( arr[ind]=="Whiteboard Care Kits") {
+                        model['marker_category_type'] = '65397066f05601bf5d55de41'
+                     }else if(arr[ind]=="WHITEBOARD MARKERS"){
+                        model['marker_category_type'] = '65397048d7b96ccee7f63082'         
+                     }
+             })
+        }
          
-//           if(ar[i].length>0){
-//                  if(i>0){
-//                     // console.log(ar[i])
-//                     model["name"]=ar[i][1],  
-//                     model["description"]=ar[i][2] ,
-//                     model["icon"]=ar[i][3],
-//                     model["did_you_know"]=ar[i][4]
-//                     model['created_on'] = new Date()
-//                     model['color'] = "all color"
-                    
-//                   //   console.log(model)
-//                      // finnal_arr.push(model)
-//                      // store(model)
+          if(ar[i].length>0){
+                 if(i>0){
+                    // console.log(ar[i])
+                    model["name"]=ar[i][1],  
+                    model["description"]=ar[i][2] ,
+                    model["icon"]=ar[i][3],
+                    model["did_you_know"]=ar[i][4]
+                    model['created_on'] = new Date()
+                    model['color'] = "all color"
+                    console.log(model)
+                     // finnal_arr.push(model)
+                     // store(model)
+                     store_markers(model)
 
-//                   }
-//                 }
-// })
+                  }
+                }
+})
 
 
 
+
+async function store_markers(model){
+   let inserted = await Makers(model)
+           await inserted.save() 
+    console.log("saved ", model )
+}
+
+
+res.send({
+   msg:"succesfully done"
+})
+
+// async function save() {
+
+//   try{
+//     for(let i=0; i<finnal_arr.length ; i++) {
+//    console.log(finnal_arr[i])
+
+//         let inserted = await Products(finnal_arr[i])
+//         await inserted.save()   
+//         console.log("saved")
+//     }
+//   }catch(err){
+//       console.log(err)
+//    }     
+  
+// }
+
+
+//  save()
+
+
+})
 
 
 
@@ -164,36 +192,36 @@ let model = {
 
 
 
-// PCW -3 , echo-write-4 ,  stationary - 5
-workSheetsFromFile[5].data.map((ele ,i, ar)=>{
+// // PCW -3 , echo-write-4 ,  stationary - 5 ,  value packs  - 6 , Markers - 7(pending) , kids coloring - 8    
+// workSheetsFromFile[7].data.map((ele ,i, ar)=>{
  
-   //  ele.map((item , ind , arr )=>{
-       
-   //            if(  arr[ind]=="Pens - Metal Pens " ) {
-   //                model['category_type'] = '6537d22343346433a3754325' 
-   //             }   else if( arr[ind]=="Pens - Everyday Writing ") {
-   //                model['category_type'] = '6537d24c6c7d38d8e947c8fa'
-   //             }
+//     ele.map((item , ind , arr )=>{
+        
+//               if(  arr[ind]=="Pens - Metal Pens " ) {
+//                   model['category_type'] = '6537d22343346433a3754325' 
+//                }   else if( arr[ind]=="Pens - Everyday Writing ") {
+//                   model['category_type'] = '6537d24c6c7d38d8e947c8fa'
+//                }
 
-   //    })
+//       })
 
    
-    if(ar[i].length>0){
+//     if(ar[i].length>0){
 
-              // console.log(ar[i])
-              model["name"]=ar[i][0],  
-              model["description"]=ar[i][1] ,
-              model["icon"]=ar[i][2],
-              model["did_you_know"]=ar[i][3]
-              model['created_on'] = new Date()
-              model['color'] = "all color"
-              model['product_cat_type'] = '653911fdeb3253e94826bcac'
-            //   console.log(model)
-            // finnal_arr.push(model)
-            console.log(i+1)
-             storeAllProductsCatWise(model)          
-          }
-})
+//               // console.log(ar[i])
+//               model["name"]=ar[i][0],  
+//               model["description"]=ar[i][1] ,
+//               model["icon"]=ar[i][2],
+//               model["did_you_know"]=ar[i][3]
+//               model['created_on'] = new Date()
+//               model['color'] = "all color"
+//               model['product_cat_type'] = '653912399a126cb9bb92f68c'
+//                //   console.log(model)
+//                // finnal_arr.push(model)
+//               //  console.log(i+1)
+//               //  storeAllProductsCatWise(model)          
+//           }
+// })
 
 
 
@@ -224,31 +252,6 @@ console.log("saved ", model )
 
 
 
-res.send({
-    msg:"succesfully done"
-})
- 
-// async function save() {
-
-//   try{
-//     for(let i=0; i<finnal_arr.length ; i++) {
-//    console.log(finnal_arr[i])
-
-//         let inserted = await Products(finnal_arr[i])
-//         await inserted.save()   
-//         console.log("saved")
-//     }
-//   }catch(err){
-//       console.log(err)
-//    }     
-   
-// }
-
-
-//  save()
- 
-
-})
 
 
 
@@ -259,10 +262,7 @@ res.send({
      
 // } )()
 
-
-
 xl.get('/insert-category-prd' ,async(req, res)=>{
-
    let ctg_prd =await categoryProductModel({
       name:"PCW" ,
    })
@@ -271,6 +271,20 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
    console.log("saved")
 
    res.send({message:ctg_prd})
+
+
+  })
+
+
+  xl.get('/insert-marker-category' ,async(req, res)=>{
+   let mrkr_ctg =await markerCateroyModel({
+      marker_category:"Whiteboard Care Kits" ,
+   })
+
+   await mrkr_ctg.save()
+   console.log("saved" ,mrkr_ctg )
+
+   res.send({message:mrkr_ctg})
 
 
   })
