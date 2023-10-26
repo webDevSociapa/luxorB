@@ -106,8 +106,6 @@ let MarkersSchema  = new Schema({
 })
 
 
-
-
 // category schema 
 let penCategoryModel = mongoose.model(collection.rg_global_master_pen_category ,penCategorySchema )
 let markerCateroyModel = mongoose.model(collection.rg_global_master_marker_category ,markerCategorySchema )

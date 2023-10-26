@@ -9,17 +9,21 @@ import path ,{ dirname } from 'path'
 import { fileURLToPath } from 'url';
 import pen from './v1/pen/routes.js'
 import xl from './excel/readxl.js'
+import cors from 'cors'
+import marker_router from './v1/markers/route.js'
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express()
 initDb()
+ 
+app.use(cors())
 app.use(express.static(path.join(__dirname , "")))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-
 app.use('/v2', xl )
 app.use('/v1', prdRouter )
+app.use('/v1', marker_router )
 app.use('/v1', pen )
 
 app.get('/' ,(req, res)=>{
