@@ -7,6 +7,7 @@ import prdRouter from './v1/products/route.js'
 import bodyParser from 'body-parser'
 import path ,{ dirname } from 'path'
 import { fileURLToPath } from 'url';
+import pen from './v1/pen/routes.js'
 import xl from './excel/readxl.js'
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json())
 
 app.use('/v2', xl )
 app.use('/v1', prdRouter )
+app.use('/v1', pen )
 
 app.get('/' ,(req, res)=>{
     res.send({ msg:"hi"})

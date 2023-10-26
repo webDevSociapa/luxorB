@@ -1,23 +1,20 @@
-import {ProductsCategory as product_ctg_model , Products } from './../../models/products.js'
-
-
-
-
+import { categoryProductModel } from '../../models/common.js'
+import { MainCatProductModel , Products } from './../../models/products.js'
 
 
 // ---------------------addc cat -------------------
-export async function addProductCategory(prd_cat_object) {
-     
-     try{
-       
-        let  new_prd =await product_ctg_model(prd_cat_object)
-        await new_prd.save()
-        return Promise.resolve(new_prd)
-     }
-     catch(err ) {
-         return Promise.reject(err.message)
-     }
-}
+
+
+// export async function addProductCategory(prd_cat_object) {     
+//        try {       
+//         let  new_prd =await product_ctg_model(prd_cat_object)
+//         await new_prd.save()
+//         return Promise.resolve(new_prd)
+//      }
+//      catch(err ) {
+//          return Promise.reject(err.message)
+//      }
+// }
 
 // ---------------------addc cat -------------------
 
@@ -74,16 +71,13 @@ export async function addProduct(prd_object) {
 
 
 
-
-
-
 // ------------get all category -------------------------
-export async function getAllProducts() {
+export async function getAllProductsCategory() {
      
     try{
-
-       let  prdtcs =await product_ctg_model.find({})
-       return Promise.resolve(prdtcs)
+        
+       let  all_cat_products =await categoryProductModel.find({})
+       return Promise.resolve(all_cat_products)
     }
     catch(err ) {
         return Promise.reject(err.message)
@@ -92,3 +86,27 @@ export async function getAllProducts() {
 
 
 // ------------get all category -------------------------
+
+
+
+
+
+
+
+
+
+// ------------get all category -------------------------
+export async function getAllCatWiseProducts(_id) {
+     
+    try{
+           
+       let  cat_wise_products =await MainCatProductModel.find({product_cat_type:_id}).populate("product_cat_type")
+       
+        console.log(cat_wise_products.length)
+       return Promise.resolve(cat_wise_products)
+    }
+    catch(err ) {
+        return Promise.reject(err.message)
+    }
+}
+
