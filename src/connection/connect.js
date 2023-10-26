@@ -6,6 +6,7 @@ export async function initDb(){
      mongoose.connect(config.db_url ,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        
      }).then(res=>{
             console.log("connectd to db " )
      }).catch(err=>{

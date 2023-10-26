@@ -1,7 +1,7 @@
 import  express  from "express";
 
 import { fail_service_response, succes_service_response } from "../../util.js";
-import { addProductCategory , addProduct, getAllProductsCategory, getAllCatWiseProducts  } from "./controller.js";
+import {  addProduct, getAllProductsCategory, getAllCatWiseProducts  } from "./controller.js";
 let prd = express.Router()
 
  

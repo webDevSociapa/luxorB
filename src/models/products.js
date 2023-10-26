@@ -109,7 +109,7 @@ let MarkersSchema  = new Schema({
 
 
 // category schema 
-let ProductsCategory = mongoose.model(collection.rg_global_master_pen_category ,penCategorySchema )
+let penCategoryModel = mongoose.model(collection.rg_global_master_pen_category ,penCategorySchema )
 let markerCateroyModel = mongoose.model(collection.rg_global_master_marker_category ,markerCategorySchema )
 // category schema 
 
@@ -120,4 +120,4 @@ let heighlighter = mongoose.model(collection.rg_global_master_heighlighter ,heig
 let Makers = mongoose.model(collection.rg_global_master_marker ,MarkersSchema )
 // their products 
 
-export  {ProductsCategory , Products ,heighlighter ,MainCatProductModel ,markerCateroyModel ,Makers    }
+export  {  Products ,heighlighter ,MainCatProductModel ,markerCateroyModel ,Makers ,penCategoryModel    }
