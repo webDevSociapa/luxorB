@@ -1,5 +1,5 @@
 import { categoryProductModel } from '../../models/common.js'
-import { MainCatProductModel , Products } from './../../models/products.js'
+import { MainCatProductModel , Products, markerCateroyModel, penCategoryModel } from './../../models/products.js'
 
 
 // ---------------------addc cat -------------------
@@ -77,7 +77,26 @@ export async function getAllProductsCategory() {
     try{
         
        let  all_cat_products =await categoryProductModel.find({})
-       return Promise.resolve(all_cat_products)
+            if(all_cat_products.length>0) {
+                var ctg_with_sub_cat = await Promise.all(all_cat_products.map(async (ele)=>{
+                    if(ele.name=="Pens"){
+                       let sub_mene_val = await penCategoryModel.find()                        
+                        return {...ele ,sub_menu: sub_mene_val }
+                    } else if(ele.name=="Markers"){
+                      let sub_mene_val = await markerCateroyModel.find()                        
+                        return {...ele ,sub_menu:sub_mene_val }
+                    }else{
+                        return ele                  
+                    }
+
+                })) 
+
+
+                return Promise.resolve(ctg_with_sub_cat)
+            }
+        
+            return Promise.resolve([])
+
     }
     catch(err ) {
         return Promise.reject(err.message)

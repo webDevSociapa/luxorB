@@ -36,37 +36,39 @@ let model = {
  let finnal_arr = []
   
 
-workSheetsFromFile[7].data.map((ele ,i, ar)=>{
+// workSheetsFromFile[7].data.map((ele ,i, ar)=>{
 
-      if( i>0) {
-          ele.map((item , ind , arr )=>{
+      // if( i>0) {
+      //     ele.map((item , ind , arr )=>{
              
-                    if(  arr[ind]=="Permanent Markers " ) {
-                        model['marker_category_type'] = '65397016d2ea5f856977cf94' 
-                     }   else if( arr[ind]=="Whiteboard Care Kits") {
-                        model['marker_category_type'] = '65397066f05601bf5d55de41'
-                     }else if(arr[ind]=="WHITEBOARD MARKERS"){
-                        model['marker_category_type'] = '65397048d7b96ccee7f63082'         
-                     }
-             })
-        }
+      //               if(  arr[ind]=="Permanent Markers " ) {
+      //                   model['marker_category_type'] = '65397016d2ea5f856977cf94' 
+      //                }   else if( arr[ind]=="Whiteboard Care Kits") {
+      //                   model['marker_category_type'] = '65397066f05601bf5d55de41'
+      //                }else if(arr[ind]=="WHITEBOARD MARKERS"){
+      //                   model['marker_category_type'] = '65397048d7b96ccee7f63082'         
+      //                }
+      //        })
+      //   }
          
-          if(ar[i].length>0){
-                 if(i>0){
-                    // console.log(ar[i])
-                    model["name"]=ar[i][1],  
-                    model["description"]=ar[i][2] ,
-                    model["icon"]=ar[i][3],
-                    model["did_you_know"]=ar[i][4]
-                    model['created_on'] = new Date()
-                    model['color'] = "all color"
-                    console.log(model)
-                     // finnal_arr.push(model)
-                     // store(model)
-                     store_markers(model)
-                    }
-                }
-   })
+        
+      //     if(ar[i].length>0){
+      //            if(i>0){
+      //               // console.log(ar[i])
+      //               model["name"]=ar[i][1],  
+      //               model["description"]=ar[i][2] ,
+      //               model["icon"]=ar[i][3],
+      //               model["did_you_know"]=ar[i][4]
+      //               model['created_on'] = new Date()
+      //               model['color'] = "all color"
+      //               console.log(model)
+      //                // finnal_arr.push(model)
+      //                // store(model)
+      //                store_markers(model)
+      //               }
+      //           }
+  
+            
 
 
 
@@ -77,11 +79,6 @@ async function store_markers(model){
            await inserted.save() 
      console.log("saved ", model )
 }
-
-
-res.send({
-   msg:"succesfully done"
-})
 
 // async function save() {
 
@@ -103,40 +100,33 @@ res.send({
 //  save()
 
 
-})
 
-
-
-// // heighlighters 
-// workSheetsFromFile[1].data.map((ele ,i, ar)=>{
+// heighlighters 
+workSheetsFromFile[1].data.map((ele ,i, ar)=>{
  
-//       //  ele.map((item , ind , arr )=>{
+       ele.map((item , ind , arr )=>{
           
-//       //            if(  arr[ind]=="Pens - Metal Pens " ) {
-//       //                model['category_type'] = '6537d22343346433a3754325' 
-//       //             }   else if( arr[ind]=="Pens - Everyday Writing ") {
-//       //                model['category_type'] = '6537d24c6c7d38d8e947c8fa'
-//       //             }
-
-//       //    })
+                 if(  arr[ind]=="Highlighters " ) {
+                     model['category_type'] = '653911ba8e6902ca42c1d6e9' 
+                 }
+         })
 
       
-//        if(ar[i].length>0){
+       if( ar[i].length>0 && i>0){
          
-//                  // console.log(ar[i])
-//                  model["name"]=ar[i][0],  
-//                  model["description"]=ar[i][1] ,
-//                  model["icon"]=ar[i][2],
-//                  model["did_you_know"]=ar[i][3]
-//                  model['created_on'] = new Date()
-//                  model['color'] = "all color"
-                 
-//                //   console.log(model)
-//                // finnal_arr.push(model)
-                
-//                   storeHeighlighter(model)          
-//              }
-// })
+                 // console.log(ar[i])
+                 model["name"]=ar[i][0],  
+                 model["description"]=ar[i][1] ,
+                 model["icon"]=ar[i][2],
+                 model["did_you_know"]=ar[i][3]
+                 model['created_on'] = new Date()
+                 model['color'] = "all color"
+                 model['product_cat_type'] = '653911ba8e6902ca42c1d6e9' 
+                 console.log(model)
+               // finnal_arr.push(model)
+               // storeAllProductsCatWise(model)          
+             }
+})
 
 
 
@@ -179,12 +169,6 @@ res.send({
 //              storeAllProductsCatWise(model)          
 //           }
 // })
-
-
-
-
-
-
 
 
 
@@ -247,6 +231,21 @@ async function storeAllProductsCatWise(model){
            await inserted.save() 
 console.log("saved ", model )
 }
+
+
+
+
+
+
+
+res.send({
+   msg:"succesfully done"
+})
+
+
+
+
+})
 
 
 

@@ -11,6 +11,7 @@ import pen from './v1/pen/routes.js'
 import xl from './excel/readxl.js'
 import cors from 'cors'
 import marker_router from './v1/markers/route.js'
+import routeMiddleware from './global_middlwares/index.js'
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express()
@@ -20,11 +21,13 @@ app.use(cors())
 app.use(express.static(path.join(__dirname , "")))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+ 
+let public_path_asset = path.join(__dirname ,"./../assets")
+console.log(public_path_asset)
 
-app.use('/v2', xl )
-app.use('/v1', prdRouter )
-app.use('/v1', marker_router )
-app.use('/v1', pen )
+app.use("/public",express.static(public_path_asset))
+
+routeMiddleware(app)
 
 app.get('/' ,(req, res)=>{
     res.send({ msg:"hi"})

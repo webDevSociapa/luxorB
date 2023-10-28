@@ -7,15 +7,6 @@ import { MainCatProductModel , Makers, Products, markerCateroyModel } from './..
 
 
 
-
-
-
-
-
-
-
-
-
 // ------------ get all marker category  -------------------------
 export async function getAllMarkerCategory(_id) {
      
