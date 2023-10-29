@@ -32,15 +32,15 @@ prd.get('/get-cate-wise-products' , (req, res )=>{
 
 
 
-prd.get('/get-cate-wise-products' , (req, res )=>{
-    let cat_id  = req.query._id
-    getAllCatWiseProducts(cat_id).then((result)=>{ 
-       res.send(succes_service_response(result)) 
-    }).catch(err=>{
-      res.send(fail_service_response(err)) 
-   })
+// prd.get('/get-cate-wise-products' , (req, res )=>{
+//     let cat_id  = req.query._id
+//     getAllCatWiseProducts(cat_id).then((result)=>{ 
+//        res.send(succes_service_response(result)) 
+//     }).catch(err=>{
+//       res.send(fail_service_response(err)) 
+//    })
    
-})
+// })
 
 
 
