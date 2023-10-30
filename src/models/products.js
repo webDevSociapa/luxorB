@@ -34,10 +34,10 @@ let productWithProductCategory  = new Schema({
 
 let markerCategorySchema  = new Schema({
     marker_category:{
-        type:String , 
-        required:true     
+         type:String , 
+         required:true     
         },
-        color:String ,  
+        color:String , 
         created_on: {
             type: Date ,
             default:()=>  new Date() , 

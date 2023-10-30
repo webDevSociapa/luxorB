@@ -2,13 +2,15 @@ import express  from 'express';
 let xl = express.Router()
 import xlsx from 'node-xlsx';
 import fs from 'fs'
-import { dirname } from 'path';
+import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { MainCatProductModel, Makers, Products ,heighlighter, markerCateroyModel   } from './../models/products.js';
 import { categoryProductModel } from '../models/common.js';
-
+import mongoose from 'mongoose';
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
+
+let ObjectId =  mongoose.Types.ObjectId
 
 xl.get('/read-and-store' ,(req, res)=>{
     
@@ -287,6 +289,36 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
 
 
   })
+
+
+  
+  
+  xl.get('/insert-cat-folder-images' ,async(req, res)=>{
+ 
+ 
+   
+       
+    
+        
+   //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
+     let folder_name = "master_prd_icons/"+req.query.folder_name 
+     let file_name = req.query.file_name
+     let _id=  req.query._id
+
+     console.log(folder_name , file_name , _id)
+      
+     let udpated = await categoryProductModel.findByIdAndUpdate(_id ,{$set : 
+      { master_folder_name:folder_name, file_name:file_name }
+   } ,     )   
+     
+
+   res.send({message:udpated})
+
+
+  })
+
+
+
 
 
 export default xl

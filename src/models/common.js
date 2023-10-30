@@ -8,6 +8,8 @@ let category_product_schema = new Schema({
          type:String ,
          required:true
      } ,
+     master_folder_name:String,
+     file_name:String,  
      created_on: {
         type: Date ,
         default:()=>  new Date() 

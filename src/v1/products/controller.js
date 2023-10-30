@@ -144,13 +144,13 @@ export  async function getProductByOnlyId({selected_prd , prd_id}) {
      
 try {
     
+     
     let find_final_cat =""
     let master_cat_id = prd_id
-
+     
     let all_prd_cat= await categoryProductModel.find({}).select('name')
     let all_pen_cat  = await penCategoryModel.find({}).select('category')
     let all_marker_cat  = await markerCateroyModel.find({}).select('marker_category')
-     
      
       const { _id: product_id , category:selected_category }  = selected_prd
       
@@ -172,9 +172,6 @@ try {
            let marker_prd = await Makers.findById(product_id)       
             return Promise.resolve(marker_prd) 
         }      
-
-
-       
 
     return Promise.resolve(true)
  } catch(err) {       

@@ -22,10 +22,9 @@ app.use(express.static(path.join(__dirname , "")))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
  
-let public_path_asset = path.join(__dirname ,"./../assets")
-console.log(public_path_asset)
+let public_path_asset = path.join(__dirname , "./../assets")
 
-app.use("/public",express.static(public_path_asset))
+app.use("/v1", express.static(public_path_asset) )
 
 routeMiddleware(app)
 
