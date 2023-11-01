@@ -7,6 +7,26 @@ import { fileURLToPath } from 'url';
 import { MainCatProductModel, Makers, Products ,heighlighter, markerCateroyModel   } from './../models/products.js';
 import { categoryProductModel } from '../models/common.js';
 import mongoose from 'mongoose';
+import multer from 'multer'
+
+import * as fses from "fs-extra"; 
+
+const storage = multer.diskStorage({
+   
+    destination: function (req, file, cb) {
+        cb(null, 'my-uploads/')
+   },
+    
+   filename: function (req, file, cb) {
+     const uniqueSuffix = Date.now()
+     cb(null, file.fieldname + '-' + uniqueSuffix)
+   }
+ })
+
+  
+ const upload = multer({ storage: storage })
+  
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 
@@ -294,12 +314,7 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
   
   
   xl.get('/insert-cat-folder-images' ,async(req, res)=>{
- 
- 
-   
-       
-    
-        
+      
    //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
      let folder_name = "master_prd_icons/"+req.query.folder_name 
      let file_name = req.query.file_name
@@ -313,9 +328,65 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
      
 
    res.send({message:udpated})
+  })
+
+
+  
+  xl.post('/insert-cat-products' ,upload.single('file'),  async(req, res)=>{
+      
+     
+   //   console.log( req.body )
+      const { _cat_id , product_name , product_id } =req.body 
+     console.log(req.file)
+     let data = await categoryProductModel.findById(_cat_id)
+      if(data!=null) { 
+     const { master_folder_name}  = data  
+      
+     let placed_file =req.file.destination+req.file.filename
+     let file_name = req.file.originalname.split('.')[0]+".jpg"
+
+     let new_folder_path = path.join(__dirname ,"../../assets/"+master_folder_name+"/products/" )   
+      let final_path = new_folder_path+file_name
+
+     fses.move(placed_file, final_path, function (err) {
+      if (err) throw err
+
+        console.log('Successfully renamed - AKA moved!')
+                MainCatProductModel.findByIdAndUpdate( product_id ,  { $set:{   
+                  root_folder_name: master_folder_name+"/products/",
+                  file_name:file_name,
+                } } ).then(response=>{
+                  console.log(response)
+                }).catch(error=>{
+                   console.log(error )
+                })    
+
+      })
+
+
+
+
+      } 
+      
+   
+    
+   //   let folder_name = "master_prd_icons/"+req.query.folder_name 
+   //   let file_name = req.query.file_name
+   //   let _id=  req.query._id
+
+   //   console.log(folder_name , file_name , _id)
+      
+   //   let udpated = await categoryProductModel.findByIdAndUpdate(_id ,{$set : 
+   //    { master_folder_name:folder_name, file_name:file_name }
+   // } ,     )   
+     
+
+   res.send({message:"updated"})
 
 
   })
+
+
 
 
 
