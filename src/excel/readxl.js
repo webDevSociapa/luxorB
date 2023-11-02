@@ -343,7 +343,7 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
      const { master_folder_name}  = data  
       
      let placed_file =req.file.destination+req.file.filename
-     let file_name = req.file.originalname.split('.')[0]+".jpg"
+     let file_name = req.file.originalname.split('.')[0]+Date.now()+".jpg"
 
      let new_folder_path = path.join(__dirname ,"../../assets/"+master_folder_name+"/products/" )   
       let final_path = new_folder_path+file_name
