@@ -7,6 +7,8 @@ let penCategorySchema  = new Schema({
      required:true     
      },
      color:String ,  
+     root_folder_name:String,
+     file_name:String,
      created_on: {
          type: Date ,
          default:()=>  new Date() , 
@@ -40,6 +42,8 @@ let markerCategorySchema  = new Schema({
          required:true     
         },
         color:String , 
+        root_folder_name:String,
+        file_name:String,
         created_on: {
             type: Date ,
             default:()=>  new Date() , 
@@ -66,7 +70,9 @@ let penSchema  = new Schema({
       color:String ,
      description:String ,
      icon:String ,
-     did_you_know:String ,  
+     did_you_know:String ,
+     root_folder_name:String,
+     file_name:String,  
      created_on: {
          type: Date ,
          default:()=>  new Date() , 
