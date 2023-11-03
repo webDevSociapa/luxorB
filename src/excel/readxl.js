@@ -454,8 +454,9 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
       const { _cat_id , product_name , product_id } =req.body 
       let data
        data = await penCategoryModel.findById(_cat_id)
-
+         const { master_folder_name}  = data  
         
+
      let placed_file = req.file.destination+req.file.filename
      let file_name = req.file.originalname.split('.')[0]+Date.now()+".jpg"
 
@@ -465,15 +466,14 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
      fses.move(placed_file, final_path, async function (err) {
       if (err) throw err
 
-        console.log('Successfully renamed - AKA moved!')
-        let model_data
-                 model_data = await penCategoryModel.findById(_cat_id)
-                  if(model_data!=null) {
-                   
-                     return Products.findByIdAndUpdate(product_id , { $set:{   
-                        root_folder_name: master_folder_name+"/products/",
-                        file_name:file_name,
-                      } } ).then(response=>{
+      let model_data
+      model_data = await penCategoryModel.findById(_cat_id)
+      if(model_data!=null) {
+         return Products.findByIdAndUpdate(product_id , { $set:{   
+            root_folder_name: master_folder_name+"/products/",
+            file_name:file_name,
+         } } ).then(response=>{
+                         console.log(' Successfully renamed - AKA moved! '  , response  )
                         return "pen added ", response
                       }).catch(error=>{
                          console.log(error )
