@@ -161,12 +161,14 @@ try {
       const { _id: product_id , category:selected_category }  = selected_prd
       
        find_final_cat = all_prd_cat.find(ele=> ele._id==master_cat_id ) 
+        
       if(find_final_cat!=null) {
          let main_prd = await MainCatProductModel.findById(product_id)
          return Promise.resolve(main_prd)
        }       
 
        find_final_cat = all_pen_cat.find(ele=> ele._id==master_cat_id ) 
+       
         if(find_final_cat!=null) {
             let pen_prd = await Products.findById(product_id)
             return Promise.resolve(pen_prd)
