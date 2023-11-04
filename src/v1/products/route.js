@@ -21,8 +21,9 @@ prd.get('/get-cate-wise-products' , (req, res )=>{
 
      let cat_id  = req.query._id
      let cat_type  = req.query.cat_type
+     let page_no  = req.query.page_no
 
-     getAllCatWiseProducts(cat_id, cat_type).then((result)=>{ 
+     getAllCatWiseProducts(cat_id, cat_type, page_no).then((result)=>{ 
         res.send(succes_service_response(result)) 
      }).catch(err=>{
        res.send(fail_service_response(err)) 

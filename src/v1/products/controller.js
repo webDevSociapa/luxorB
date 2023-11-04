@@ -107,10 +107,12 @@ export async function getAllProductsCategory() {
 // ------------get all category -------------------------
 
 
-export async function getAllCatWiseProducts(_id , cat_type) {
+export async function getAllCatWiseProducts(_id , cat_type ,page_no ) {
      
     try{
 
+        let limit= 20
+        let skip= page_no?(page_no-1)*limit:0 
 
          let prd_names = await categoryProductModel.findById(_id)
         //  console.log(prd_names , cat_type )
@@ -118,17 +120,21 @@ export async function getAllCatWiseProducts(_id , cat_type) {
           if(prd_names==null) {
              
          if( cat_type.trim()=="metal pens" || cat_type.trim()=="everyday writing" ) {
-            let cat_wise_products =await Products.find({category_type:_id}).populate("category_type")       
-            return Promise.resolve(cat_wise_products) 
+            let cat_wise_products =await Products.find({category_type:_id}).populate("category_type").limit(limit).skip(skip)       
+            let prd_count =await Products.find({category_type:_id}).populate("category_type").count()
+
+            return Promise.resolve({cat_wise_products , total:prd_count }  ) 
 
          }else if(cat_type.trim()=="Permanent Markers" || cat_type.trim()=="WHITEBOARD MARKERS" || cat_type.trim()=="Whiteboard Care Kits"){
-            let cat_wise_products =await Makers.find({marker_category_type:_id}).populate("marker_category_type")       
-            return  Promise.resolve(cat_wise_products)
+            let cat_wise_products =await Makers.find({marker_category_type:_id}).populate("marker_category_type").limit(limit).skip(skip)          
+            let prd_count =await Makers.find({marker_category_type:_id}).populate("marker_category_type").count()
+            return  Promise.resolve({cat_wise_products ,total:prd_count  })
          }
  
          }else{
-            let  cat_wise_products =await MainCatProductModel.find({product_cat_type:_id}).populate("product_cat_type")       
-            return Promise.resolve(cat_wise_products)   
+            let  cat_wise_products =await MainCatProductModel.find({product_cat_type:_id}).populate("product_cat_type").limit(limit).skip(skip)        
+            let  prd_count =await MainCatProductModel.find({product_cat_type:_id}).populate("product_cat_type").count()
+            return Promise.resolve({cat_wise_products,total:prd_count })   
          }
 
            

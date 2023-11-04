@@ -385,6 +385,31 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
   
 
 
+  
+
+  xl.get('/insert-cat-folder-images-for-markers' ,async(req, res)=>{
+      
+   //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
+     let folder_name = "master_prd_icons/markers/"+req.query.folder_name 
+     let file_name = req.query.file_name
+     let _id=  req.query._id
+      
+     console.log( folder_name , file_name , _id )
+      
+      
+      let udpated = await markerCateroyModel.findByIdAndUpdate( _id ,
+         {$set : 
+          { root_folder_name:folder_name, file_name:file_name }
+         } ,   )    
+       
+
+   res.send({message:udpated})
+  })
+
+
+  
+
+
 
 
 
@@ -512,19 +537,6 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
       })
 
 
-   
-    
-   //   let folder_name = "master_prd_icons/"+req.query.folder_name 
-   //   let file_name = req.query.file_name
-   //   let _id=  req.query._id
-
-   //   console.log(folder_name , file_name , _id)
-      
-   //   let udpated = await categoryProductModel.findByIdAndUpdate(_id ,{$set : 
-   //    { master_folder_name:folder_name, file_name:file_name }
-   // } ,     )   
-     
-
    res.send({message:"updated"})
 
 
@@ -532,6 +544,50 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+  
+
+  xl.post('/insert-cat-products-for-marker' ,upload.single('file'),  async(req, res)=>{
+      
+ 
+   //   console.log( req.body )
+   const { _cat_id , product_name , product_id } =req.body 
+   console.log(req.file)
+   const { master_folder_name} = await markerCateroyModel.findById(_cat_id)
+    
+   let placed_file =req.file.destination+req.file.filename
+   let file_name = req.file.originalname.split('.')[0]+Date.now()+".jpg"
+
+   let new_folder_path = path.join(__dirname ,"../../assets/"+master_folder_name+"/products/" )   
+    let final_path = new_folder_path+file_name
+
+   fses.move(placed_file, final_path, function (err) {
+    if (err) throw err
+
+      console.log('Successfully renamed - AKA moved!')
+                  Makers.findByIdAndUpdate( product_id ,  { $set:{   
+                root_folder_name: master_folder_name+"/products/",
+                file_name:file_name,
+              } } ).then(response=>{
+                console.log(response)
+              }).catch(error=>{
+                 console.log(error )
+              })    
+
+    })
+   res.send({message:"updated"})
+
+
+  })
 
 
 
