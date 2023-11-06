@@ -29,9 +29,10 @@ app.use("/v1", express.static(public_path_asset) )
 routeMiddleware(app)
 
 app.get('/' ,(req, res)=>{
-    res.send({ msg:"hi"})
+    res.sendFile('index.html')
 })
 
+ 
 app.listen(config.port , ()=>{
      console.log(` serve connected to  ${dotenv.DB} db and started on port  `,config.port , )
 })
