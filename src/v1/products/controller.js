@@ -134,6 +134,7 @@ export async function getAllCatWiseProducts(_id , cat_type ,page_no ) {
          }else{
             let  cat_wise_products =await MainCatProductModel.find({product_cat_type:_id}).populate("product_cat_type").limit(limit).skip(skip)        
             let  prd_count =await MainCatProductModel.find({product_cat_type:_id}).populate("product_cat_type").count()
+             console.log(cat_wise_products)
             return Promise.resolve({cat_wise_products,total:prd_count })   
          }
 
