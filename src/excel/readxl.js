@@ -283,6 +283,7 @@ res.send({
      
 // } )()
 
+
 xl.get('/insert-category-prd' ,async(req, res)=>{
    let ctg_prd =await categoryProductModel({
       name:"PCW" ,
@@ -314,7 +315,7 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
   
   
   xl.get('/insert-cat-folder-images' ,async(req, res)=>{
-      
+
    //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
    let folder_name = "master_prd_icons/"+req.query.folder_name 
    let file_name = req.query.file_name
@@ -332,9 +333,6 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
 
 
   
-
-
-
   xl.get('/insert-cat-folder-images-for-markers' ,async(req, res)=>{
       
    //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
@@ -361,20 +359,19 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
   
 
 
-
   xl.get('/insert-cat-folder-images-for-pens' ,async(req, res)=>{
       
    //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
      let folder_name = "master_prd_icons/pens/"+req.query.folder_name 
      let file_name = req.query.file_name
      let _id=  req.query._id
-      
+
+
      console.log( folder_name , file_name , _id )
       
-    
+
       let udpated = await penCategoryModel.findByIdAndUpdate( _id ,
-         {$set : 
-          { root_folder_name:folder_name, file_name:file_name }
+         {$set :  { root_folder_name:folder_name, file_name:file_name }
  } ,     )    
        
 
@@ -385,7 +382,90 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
   
 
 
-  
+//   -------for pen ----------
+
+  xl.get('/insert-main-cat-folder-images-for-pens' ,async(req, res)=>{
+      
+   //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
+   //   let file_name = req.query.file_name
+   let _id=  req.query._id
+
+   const { master_folder_name}  =await penCategoryModel.findById(_id) 
+   let folder_name = master_folder_name+"/"+req.query.folder_name 
+
+      let udpated = await penCategoryModel.findByIdAndUpdate( _id ,
+         {$set :  {  product_folder_name:folder_name   }
+ } ,     )    
+      
+   res.send({message:udpated})
+  })
+
+//   -------for pen ----------
+
+
+
+
+
+
+
+
+
+
+
+
+//   -------except marker and pen  ----------
+  xl.get('/insert-main-cat-images-folder-for-all-products' ,async(req, res)=>{
+      
+   //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
+   //   let file_name = req.query.file_name
+   let _id=  req.query._id
+   const { master_folder_name}  =await categoryProductModel.findById(_id) 
+   
+   let folder_name = master_folder_name+"/"+req.query.folder_name 
+
+      let udpated = await categoryProductModel.findByIdAndUpdate( _id ,
+         {$set :  {  product_folder_name:folder_name   }
+ } ,     )    
+      
+   res.send({message:udpated})
+  })
+
+//   -------except marker and pen  ----------
+
+
+
+// ------------------------for markers --------------------
+
+xl.get('/insert-main-cat-images-folder-for-markers' ,async(req, res)=>{
+      
+   //   let folder_name = path.join(__dirname ,"../../assets/master_prd_icons/"+req.query.folder_name) 
+   //   let file_name = req.query.file_name
+   let _id=  req.query._id
+   const { master_folder_name}  =await markerCateroyModel.findById(_id) 
+    
+     let folder_name = master_folder_name+"/"+req.query.folder_name 
+
+      let udpated = await markerCateroyModel.findByIdAndUpdate( _id ,
+         {$set :  {  product_folder_name:folder_name   }
+ } ,     )    
+      
+   res.send({message:udpated})
+  })
+
+// ------------------------for markers --------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   xl.get('/insert-cat-folder-images-for-markers' ,async(req, res)=>{
       
@@ -407,9 +487,124 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
   })
 
 
+
+
+
   
 
 
+
+  xl.post('/insert-main-prduct-images' ,upload.single('file'),  async(req, res)=>{
+   
+   //   console.log( req.body )
+      const { _cat_id , product_name , product_id }  = req.body 
+   //   console.log(req.file)
+    
+     let data = await categoryProductModel.findById(_cat_id) 
+      if(data!=null) { 
+          
+     const { product_folder_name }  = data  
+
+     let placed_file =req.file.destination+req.file.filename
+     let file_name = req.file.originalname.split( '.' )[0]+Date.now()+".jpg"
+
+     let new_folder_path = path.join(__dirname ,"../../assets/"+product_folder_name+"/" )   
+      let final_path = new_folder_path+file_name
+
+     fses.move(placed_file, final_path, function (err) {
+      if (err) throw err
+      
+                MainCatProductModel.findByIdAndUpdate( product_id ,  { $set:{   
+                  product_root_folder_name:  product_folder_name 
+                } , $push:{product_file_names:file_name}   } ).then(response=>{
+                  console.log(response)
+                }).catch(error=>{
+                   console.log(error )
+                })    
+
+      })
+
+      } 
+    
+
+   res.send({message:"updated"})
+  })
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+//   ----------for pen -------------------------
+  xl.post('/insert-main-prduct-images' ,upload.single('file'),  async(req, res)=>{
+   
+   //   console.log( req.body )
+      const { _cat_id , product_name , product_id }  = req.body 
+   //   console.log(req.file)
+    
+     let data = await categoryProductModel.findById(_cat_id)
+      if(data!=null) { 
+          
+     const { product_folder_name }  = data  
+
+     let placed_file =req.file.destination+req.file.filename
+     let file_name = req.file.originalname.split( '.' )[0]+Date.now()+".jpg"
+
+     let new_folder_path = path.join(__dirname ,"../../assets/"+product_folder_name+"/" )   
+      let final_path = new_folder_path+file_name
+
+     fses.move(placed_file, final_path, function (err) {
+      if (err) throw err
+      
+                MainCatProductModel.findByIdAndUpdate( product_id ,  { $set:{   
+                  product_root_folder_name:  product_folder_name 
+                } , $push:{product_file_names:file_name}   } ).then(response=>{
+                  console.log(response)
+                }).catch(error=>{
+                   console.log(error )
+                })    
+
+      })
+
+      } 
+    
+
+   res.send({message:"updated"})
+
+
+  })
+
+
+//   ----------for pen -------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
 
@@ -445,9 +640,6 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
 
       })
 
-
-
-
       } 
       
    
@@ -470,11 +662,8 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
 
 
 
-
-
   xl.post('/insert-cat-products-for-pen' ,upload.single('file'),  async(req, res)=>{
-      
-
+   
    //   console.log( req.body )
       const { _cat_id , product_name , product_id } =req.body 
       let data
@@ -533,7 +722,6 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
                 }).catch(error=>{
                    console.log(error )
                 })    
-
       })
 
 
@@ -541,6 +729,107 @@ xl.get('/insert-category-prd' ,async(req, res)=>{
 
 
   })
+
+
+
+
+
+
+
+
+
+
+
+  xl.post('/insert-master-cat-products-for-pen' ,upload.single('file'),  async(req, res)=>{
+   
+   //   console.log( req.body )
+      const { _cat_id , product_name , product_id } =req.body 
+       
+      let data
+       data = await penCategoryModel.findById(_cat_id)
+         const { master_folder_name}  = data  
+        
+
+     let placed_file = req.file.destination+req.file.filename
+     let file_name = req.file.originalname.split('.')[0]+Date.now()+".jpg"
+
+     let new_folder_path = path.join(__dirname ,"../../assets/"+master_folder_name+"/products/" )   
+      let final_path = new_folder_path+file_name
+
+     fses.move(placed_file, final_path, async function (err) {
+      if (err) throw err
+
+      let model_data
+      model_data = await penCategoryModel.findById(_cat_id)
+      if(model_data!=null) {
+         return Products.findByIdAndUpdate(product_id , { $set:{   
+            root_folder_name: master_folder_name+"/products/",
+            file_name:file_name,
+         } } ).then(response=>{
+                         console.log(' Successfully renamed - AKA moved! '  , response  )
+                        return "pen added ", response
+                      }).catch(error=>{
+                         console.log(error )
+                      })    
+      
+                     return
+                  }
+                 
+                  model_data = await markerCateroyModel.findById(_cat_id)
+
+                   if(model_data!=null){
+                      
+                     return Makers.findByIdAndUpdate(product_id , { $set:{   
+                        root_folder_name: master_folder_name+"/products/",
+                        file_name:file_name,
+                      } } ).then(response=>{
+                        return "marker added ", response
+                      }).catch(error=>{
+                         console.log(error )
+                      })   
+
+
+                     return 
+                  }
+
+
+                 MainCatProductModel.findByIdAndUpdate( product_id ,  { $set:{   
+                  root_folder_name: master_folder_name+"/products/",
+                  file_name:file_name,
+                } } ).then(response=>{
+                  console.log(response)
+                }).catch(error=>{
+                   console.log(error )
+                })    
+      })
+
+
+   res.send({message:"updated"})
+
+
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

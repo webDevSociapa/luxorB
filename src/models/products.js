@@ -8,6 +8,7 @@ let penCategorySchema  = new Schema({
      },
      color:String ,  
      master_folder_name:String,
+     product_folder_name:String, 
      file_name:String,
      created_on: {
          type: Date ,
@@ -28,7 +29,12 @@ let productWithProductCategory  = new Schema({
     did_you_know:String ,  
     color:String ,
     root_folder_name:String,
+    product_root_folder_name:String,
     file_name:String,
+    product_file_names:{
+        type:[String],
+        // default:()=> []
+    },
    created_on: {
        type: Date ,
        default:()=>  new Date() , 
@@ -44,6 +50,7 @@ let markerCategorySchema  = new Schema({
         color:String , 
         master_folder_name:String,
         file_name:String,
+        product_folder_name:String, 
         created_on: {
             type: Date ,
             default:()=>  new Date() , 
@@ -72,6 +79,7 @@ let penSchema  = new Schema({
      icon:String ,
      did_you_know:String ,
      root_folder_name:String,
+     product_root_folder_name:String ,
      file_name:String,  
      
      created_on: {
@@ -94,7 +102,6 @@ let heighlighterSchema  = new Schema({
        default:()=>  new Date() , 
    }
 })
-
 
 
 
