@@ -34,6 +34,23 @@ export async function addProduct(prd_object) {
     return Promise.reject(err.message);
   }
 }
+export async function getAllMasterPens() {
+  try {
+    let get_all_pens = await Products.find({});
+    return Promise.resolve(get_all_pens);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
+export async function getAllCategories() {
+  try {
+    let all_cat_products = await categoryProductModel.find({});
+    return Promise.resolve(all_cat_products);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
 
 // ---------------------add prd ----------------------------
 
@@ -41,6 +58,7 @@ export async function addProduct(prd_object) {
 export async function getAllProductsCategory() {
   try {
     let all_cat_products = await categoryProductModel.find({});
+
     if (all_cat_products.length > 0) {
       var ctg_with_sub_cat = await Promise.all(
         all_cat_products.map(async (ele) => {
