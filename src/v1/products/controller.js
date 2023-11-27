@@ -34,6 +34,23 @@ export async function addProduct(prd_object) {
     return Promise.reject(err.message);
   }
 }
+export async function updateProduct(id, prd_object) {
+  try {
+    let new_prd = await Products.findByIdAndUpdate(id, prd_object);
+    return Promise.resolve(new_prd);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+export async function getProductById(id) {
+  try {
+    let new_prd = await Products.findById(id);
+    return Promise.resolve(new_prd);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
 export async function getAllMasterPens() {
   try {
     let get_all_pens = await Products.find({});
@@ -177,6 +194,19 @@ export async function getProductByOnlyId({ selected_prd, prd_id }) {
 
     return Promise.resolve(true);
   } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
+export async function getSubCategoryById(category_id) {
+  try {
+    const data = await penCategoryModel.find({
+      product_category_type: category_id,
+    });
+    console.log("penData-->", data);
+    return Promise.resolve(data);
+  } catch (err) {
+    console.log(err.message);
     return Promise.reject(err.message);
   }
 }

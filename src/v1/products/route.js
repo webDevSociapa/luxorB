@@ -8,6 +8,9 @@ import {
   getProductByOnlyId,
   getAllCategories,
   getAllMasterPens,
+  getSubCategoryById,
+  updateProduct,
+  getProductById,
 } from "./controller.js";
 let prd = express.Router();
 
@@ -21,8 +24,53 @@ prd.get("/get-all-categories", (req, res) => {
     });
 });
 
+prd.post("/add-product", (req, res) => {
+  // {
+  //     name: nameRef.current.value,
+  //     category_type: selectedCategory,
+  //     color: colorRef.current.value,
+  //     description: descriptionRef.current.value,
+  //     icon: iconRef.current.value,
+  //     did_you_know: didYouKnowRef.current.value,
+  //     file_name: fileNameRef.current.value,
+  //     root_folder_name: rootFolderNameRef.current.value,
+  //   };
+  const data = req.body;
+  console.log("data->", data);
+  addProduct(data)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+prd.post("/update-product/:id", (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+  console.log("data->", data);
+  console.log("id->", id);
+  updateProduct(id, data)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
 prd.get("/get-all-pens", (req, res) => {
   getAllMasterPens()
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+prd.post("/get-product-by-id", (req, res) => {
+  const { id } = req.body;
+  getProductById(id)
     .then((result) => {
       res.send(succes_service_response(result));
     })
@@ -47,6 +95,19 @@ prd.get("/get-cate-wise-products", (req, res) => {
   let page_no = req.query.page_no;
 
   getAllCatWiseProducts(cat_id, cat_type, page_no)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
+prd.post("/get-pen-subcategory", (req, res) => {
+  console.log("body-->", req.body);
+  let { category_id } = req.body;
+
+  getSubCategoryById(category_id)
     .then((result) => {
       res.send(succes_service_response(result));
     })

@@ -6,6 +6,10 @@ let penCategorySchema = new Schema({
     type: String,
     required: true,
   },
+  product_category_type: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: collection.rg_global_master_category_product,
+  },
   color: String,
   master_folder_name: String,
   product_folder_name: String,
