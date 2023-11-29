@@ -11,11 +11,22 @@ import {
   getSubCategoryById,
   updateProduct,
   getProductById,
+  getMasterMainCatWiseProducts,
 } from "./controller.js";
 let prd = express.Router();
 
 prd.get("/get-all-categories", (req, res) => {
   getAllCategories()
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
+prd.get("/get-master-main-cat-wise-products", (req, res) => {
+  getMasterMainCatWiseProducts()
     .then((result) => {
       res.send(succes_service_response(result));
     })

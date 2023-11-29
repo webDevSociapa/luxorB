@@ -63,6 +63,10 @@ let penSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: collection.rg_global_master_pen_category,
   },
+  main_category_type: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: collection.rg_global_master_category_product,
+  },
   name: String,
   color: String,
   description: String,

@@ -72,6 +72,16 @@ export async function getAllCategories() {
 // ---------------------add prd ----------------------------
 
 // ------------get all category -------------------------
+
+export async function getMasterMainCatWiseProducts() {
+  try {
+    let master_main_cat_wise_products = await MainCatProductModel.find({});
+    return Promise.resolve(master_main_cat_wise_products);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
 export async function getAllProductsCategory() {
   try {
     let all_cat_products = await categoryProductModel.find({});
