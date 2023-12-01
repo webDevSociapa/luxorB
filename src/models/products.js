@@ -75,6 +75,7 @@ let penSchema = new Schema({
   root_folder_name: String,
   product_root_folder_name: String,
   file_name: String,
+  color_variant: Array,
 
   created_on: {
     type: Date,
