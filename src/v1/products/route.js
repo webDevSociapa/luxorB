@@ -12,6 +12,7 @@ import {
   updateProduct,
   getProductById,
   getMasterMainCatWiseProducts,
+  addMainCatWiseProduct,
 } from "./controller.js";
 let prd = express.Router();
 
@@ -56,6 +57,29 @@ prd.post("/add-product", (req, res) => {
       res.send(fail_service_response(err));
     });
 });
+
+prd.post("/add-main-cat-wise-product", (req, res) => {
+  // {
+  //     name: nameRef.current.value,
+  //     category_type: selectedCategory,
+  //     color: colorRef.current.value,
+  //     description: descriptionRef.current.value,
+  //     icon: iconRef.current.value,
+  //     did_you_know: didYouKnowRef.current.value,
+  //     file_name: fileNameRef.current.value,
+  //     root_folder_name: rootFolderNameRef.current.value,
+  //   };
+  const data = req.body;
+  console.log("data->", data);
+  addMainCatWiseProduct(data)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
 prd.post("/update-product/:id", (req, res) => {
   const data = req.body;
   const { id } = req.params;

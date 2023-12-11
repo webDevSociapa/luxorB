@@ -511,8 +511,17 @@ xl.post(
     const { _cat_id, product_name, product_id, label, hexcode } = req.body;
     console.log("data-->", _cat_id, product_id);
     let data;
+    let master_folder_name;
     data = await penCategoryModel.findById(_cat_id);
-    const { master_folder_name } = data;
+
+    if (data) {
+      master_folder_name = data.master_folder_name;
+    } else {
+      data = await categoryProductModel.findById(_cat_id);
+      if (data != null) {
+        master_folder_name = data.product_folder_name;
+      }
+    }
 
     let placed_file = req.file.destination + req.file.filename;
     let file_name = req.file.originalname.split(".")[0] + Date.now() + ".jpg";
@@ -534,28 +543,28 @@ xl.post(
     fses.move(placed_file, final_path, async function (err) {
       if (err) throw err;
 
-      let model_data;
-      model_data = await penCategoryModel.findById(_cat_id);
-      if (model_data != null) {
-        return Products.findByIdAndUpdate(product_id, {
-          // $set: {
-          //   root_folder_name: master_folder_name + "/products/",
-          //   file_name: file_name,
-          // },
-          $push: {
-            color_variant: color_variant_data,
-          },
+      // let model_data;
+      // model_data = await penCategoryModel.findById(_cat_id);
+      // if (model_data != null) {
+      return Products.findByIdAndUpdate(product_id, {
+        // $set: {
+        //   root_folder_name: master_folder_name + "/products/",
+        //   file_name: file_name,
+        // },
+        $push: {
+          color_variant: color_variant_data,
+        },
+      })
+        .then((response) => {
+          console.log(" Successfully renamed - AKA moved! ", response);
+          return "pen added ", response;
         })
-          .then((response) => {
-            console.log(" Successfully renamed - AKA moved! ", response);
-            return "pen added ", response;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .catch((error) => {
+          console.log(error);
+        });
 
-        return;
-      }
+      return;
+      // }
 
       // model_data = await markerCateroyModel.findById(_cat_id);
 
@@ -604,8 +613,19 @@ xl.post(
     const { _cat_id, product_name, product_id } = req.body;
     console.log("data-->", _cat_id, product_id);
     let data;
+    let master_folder_name;
     data = await penCategoryModel.findById(_cat_id);
-    const { master_folder_name } = data;
+    let hasSubCategory;
+
+    if (data) {
+      hasSubCategory = true;
+      master_folder_name = data.master_folder_name;
+    } else {
+      data = await categoryProductModel.findById(_cat_id);
+      if (data != null) {
+        master_folder_name = data.product_folder_name;
+      }
+    }
 
     let placed_file = req.file.destination + req.file.filename;
     let file_name = req.file.originalname.split(".")[0] + Date.now() + ".jpg";
@@ -620,26 +640,27 @@ xl.post(
       if (err) throw err;
 
       let model_data;
-      model_data = await penCategoryModel.findById(_cat_id);
-      if (model_data != null) {
-        return Products.findByIdAndUpdate(product_id, {
-          $set: {
-            root_folder_name: master_folder_name + "/products/",
-            file_name: file_name,
-          },
+      // if (hasSubCategory) {
+      //  model_data = await penCategoryModel.findById(_cat_id);
+      //  if (model_data != null) {
+      return Products.findByIdAndUpdate(product_id, {
+        $set: {
+          root_folder_name: master_folder_name + "/products/",
+          file_name: file_name,
+        },
+      })
+        .then((response) => {
+          console.log(" Successfully renamed - AKA moved! ", response);
+          return "pen added ", response;
         })
-          .then((response) => {
-            console.log(" Successfully renamed - AKA moved! ", response);
-            return "pen added ", response;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .catch((error) => {
+          console.log(error);
+        });
+      //   }
+      //  }
+    });
 
-        return;
-      }
-
-      model_data = await markerCateroyModel.findById(_cat_id);
+    /*   model_data = await markerCateroyModel.findById(_cat_id);
 
       if (model_data != null) {
         return Makers.findByIdAndUpdate(product_id, {
@@ -657,20 +678,7 @@ xl.post(
 
         return;
       }
-
-      MainCatProductModel.findByIdAndUpdate(product_id, {
-        $set: {
-          root_folder_name: master_folder_name + "/products/",
-          file_name: file_name,
-        },
-      })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+ */
 
     res.send({ message: "updated" });
   }

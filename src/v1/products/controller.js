@@ -34,6 +34,16 @@ export async function addProduct(prd_object) {
     return Promise.reject(err.message);
   }
 }
+export async function addMainCatWiseProduct(prd_object) {
+  try {
+    let new_prd = await MainCatProductModel(prd_object);
+    await new_prd.save();
+    return Promise.resolve(new_prd);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
 export async function updateProduct(id, prd_object) {
   try {
     let new_prd = await Products.findByIdAndUpdate(id, prd_object);
