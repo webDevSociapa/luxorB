@@ -25,13 +25,16 @@ app.use(bodyParser.json())
 let public_path_asset = path.join(__dirname , "./../assets")
 
 app.use("/v1", express.static(public_path_asset) )
+app.use("/", express.static(path.join(__dirname , "../admin")) )
+const adminPath = path.join(__dirname, '../admin');
+
 
 routeMiddleware(app)
 
-app.get('/' ,(req, res)=>{
-    res.sendFile('index.html')
-})
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(adminPath, 'index.html'));
+});
  
 app.listen(config.port , ()=>{
      console.log(` serve connected to  ${dotenv.DB} db and started on port  `,config.port , )
