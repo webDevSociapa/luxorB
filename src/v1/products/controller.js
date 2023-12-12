@@ -21,6 +21,37 @@ import {
 //      }
 // }
 
+//==================get-all-products(new collection)==================//
+
+export async function getAllGlobalProducts(_id, page_no) {
+  try {
+    let limit = 20;
+    let skip = page_no ? (page_no - 1) * limit : 0;
+
+    let prd_names = await categoryProductModel.findById(_id);
+    if (prd_names == null) {
+      const penData = await Products.find({ category_type: _id })
+        .limit(limit)
+        .skip(skip);
+      const prds_count = await Products.find({ category_type: _id }).count();
+      return Promise.resolve({ cat_wise_products: penData, total: prds_count });
+    } else {
+      const otherData = await Products.find({ main_category_type: _id })
+        .limit(limit)
+        .skip(skip);
+      const prd_count = await Products.find({
+        main_category_type: _id,
+      }).count();
+      return Promise.resolve({
+        cat_wise_products: otherData,
+        total: prd_count,
+      });
+    }
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
 // ---------------------addc cat -------------------
 
 // ---------------------add prd ----------------------------

@@ -13,11 +13,26 @@ import {
   getProductById,
   getMasterMainCatWiseProducts,
   addMainCatWiseProduct,
+  getAllGlobalProducts,
 } from "./controller.js";
 let prd = express.Router();
 
 prd.get("/get-all-categories", (req, res) => {
   getAllCategories()
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
+//Get all products (new collection)
+prd.get("/get-all-global-products", (req, res) => {
+  let cat_id = req.query._id;
+  let page_no = req.query.page_no;
+
+  getAllGlobalProducts(cat_id, page_no)
     .then((result) => {
       res.send(succes_service_response(result));
     })

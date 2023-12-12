@@ -222,15 +222,102 @@ xl.get("/read-and-store", (req, res) => {
 
 // } )()
 
-xl.get("/insert-category-prd", async (req, res) => {
+// xl.get("/insert-category-prd", async (req, res) => {
+//   let ctg_prd = await categoryProductModel({
+//     name: "PCW",
+//   });
+
+//   await ctg_prd.save();
+//   console.log("saved");
+
+//   res.send({ message: ctg_prd });
+// });
+
+// Add Category Data
+xl.post("/insert-category-prd", async (req, res) => {
+  const { name } = req.body;
   let ctg_prd = await categoryProductModel({
-    name: "PCW",
+    name,
   });
 
   await ctg_prd.save();
   console.log("saved");
 
   res.send({ message: ctg_prd });
+});
+
+//Update category data
+xl.post("/update-category-prd/:id", async (req, res) => {
+  const { name } = req.body;
+  const { id } = req.params;
+  let ctg_prd = await categoryProductModel.findByIdAndUpdate(id, {
+    name,
+  });
+
+  await ctg_prd.save();
+  console.log("saved");
+
+  res.send({ message: ctg_prd });
+});
+
+//upload-image for category
+xl.post("/insert-category-image", upload.single("file"), async (req, res) => {
+  //   console.log( req.body )
+  const { _id, name } = req.body;
+  console.log(req.file);
+  let data = await categoryProductModel.findById(_id);
+
+  let master_folder_name;
+
+  if (data.master_folder_name) {
+    master_folder_name = data.master_folder_name;
+  } else {
+    master_folder_name =
+      "master_prd_icons/" + name.split(" ").join("_").toLowerCase();
+  }
+
+  console.log("master_folder_name category--->", master_folder_name);
+
+  let placed_file = req.file.destination + req.file.filename;
+  let file_name = req.file.originalname.split(".")[0] + Date.now() + ".jpg";
+
+  let new_folder_path = path.join(
+    __dirname,
+    "../../assets/" + master_folder_name + "/"
+  );
+  let final_path = new_folder_path + file_name;
+
+  fses.move(placed_file, final_path, function (err) {
+    if (err) throw err;
+
+    console.log("Successfully renamed - AKA moved!");
+    categoryProductModel
+      .findByIdAndUpdate(_id, {
+        $set: {
+          master_folder_name: master_folder_name,
+          file_name: file_name,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  //   let folder_name = "master_prd_icons/"+req.query.folder_name
+  //   let file_name = req.query.file_name
+  //   let _id=  req.query._id
+
+  //   console.log(folder_name , file_name , _id)
+
+  //   let udpated = await categoryProductModel.findByIdAndUpdate(_id ,{$set :
+  //    { master_folder_name:folder_name, file_name:file_name }
+  // } ,     )
+
+  res.send({ message: "updated" });
+  // res.send({ message: master_folder_name });
 });
 
 xl.get("/insert-marker-category", async (req, res) => {
