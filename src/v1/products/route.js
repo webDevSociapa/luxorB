@@ -14,6 +14,8 @@ import {
   getMasterMainCatWiseProducts,
   addMainCatWiseProduct,
   getAllGlobalProducts,
+  addSubCategory,
+  updateSubCategory,
 } from "./controller.js";
 let prd = express.Router();
 
@@ -72,6 +74,17 @@ prd.post("/add-product", (req, res) => {
       res.send(fail_service_response(err));
     });
 });
+prd.post("/add-product-sub-category", (req, res) => {
+  const data = req.body;
+  console.log("data->", data);
+  addSubCategory(data)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
 
 prd.post("/add-main-cat-wise-product", (req, res) => {
   // {
@@ -101,6 +114,20 @@ prd.post("/update-product/:id", (req, res) => {
   console.log("data->", data);
   console.log("id->", id);
   updateProduct(id, data)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
+prd.patch("/update-sub-category/:id", (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+  console.log("data->", data);
+  console.log("id->", id);
+  updateSubCategory(id, data)
     .then((result) => {
       res.send(succes_service_response(result));
     })

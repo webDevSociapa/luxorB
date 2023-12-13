@@ -74,6 +74,15 @@ export async function addMainCatWiseProduct(prd_object) {
     return Promise.reject(err.message);
   }
 }
+export async function addSubCategory(sub_cat_object) {
+  try {
+    let new_prd = await penCategoryModel(sub_cat_object);
+    await new_prd.save();
+    return Promise.resolve(new_prd);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
 
 export async function updateProduct(id, prd_object) {
   try {
@@ -83,6 +92,17 @@ export async function updateProduct(id, prd_object) {
     return Promise.reject(err.message);
   }
 }
+
+export async function updateSubCategory(id, sub_cat_object) {
+  try {
+    let new_prd = await penCategoryModel.findByIdAndUpdate(id, sub_cat_object);
+    await new_prd.save();
+    return Promise.resolve(new_prd);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
 export async function getProductById(id) {
   try {
     let new_prd = await Products.findById(id);

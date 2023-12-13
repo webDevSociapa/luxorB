@@ -247,7 +247,7 @@ xl.post("/insert-category-prd", async (req, res) => {
 });
 
 //Update category data
-xl.post("/update-category-prd/:id", async (req, res) => {
+xl.patch("/update-category-prd/:id", async (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
   let ctg_prd = await categoryProductModel.findByIdAndUpdate(id, {
@@ -260,7 +260,7 @@ xl.post("/update-category-prd/:id", async (req, res) => {
   res.send({ message: ctg_prd });
 });
 
-//upload-image for category
+//upload-image for category(new api)
 xl.post("/insert-category-image", upload.single("file"), async (req, res) => {
   //   console.log( req.body )
   const { _id, name } = req.body;
@@ -319,6 +319,81 @@ xl.post("/insert-category-image", upload.single("file"), async (req, res) => {
   res.send({ message: "updated" });
   // res.send({ message: master_folder_name });
 });
+
+// upload image for sub-category(new api)
+xl.post(
+  "/insert-sub-category-image",
+  upload.single("file"),
+  async (req, res) => {
+    //   console.log( req.body )
+    // const { sub_cat_id, product_name, product_id } = req.body;
+    const { sub_cat_id } = req.body;
+    console.log("data-->", sub_cat_id);
+    let data;
+    let master_folder_name;
+    data = await penCategoryModel.findById(sub_cat_id);
+
+    if (data) {
+      master_folder_name = data.master_folder_name;
+    } else {
+      res.send({ message: "Not Found" });
+    }
+
+    let placed_file = req.file.destination + req.file.filename;
+    let file_name = req.file.originalname.split(".")[0] + Date.now() + ".jpg";
+
+    let new_folder_path = path.join(
+      __dirname,
+      "../../assets/" + master_folder_name
+    );
+    let final_path = new_folder_path + "/" + file_name;
+
+    fses.move(placed_file, final_path, async function (err) {
+      if (err) throw err;
+
+      // if (hasSubCategory) {
+      //  model_data = await penCategoryModel.findById(_cat_id);
+      //  if (model_data != null) {
+      return penCategoryModel
+        .findByIdAndUpdate(sub_cat_id, {
+          $set: {
+            file_name: file_name,
+          },
+        })
+        .then((response) => {
+          console.log(" Successfully renamed - AKA moved! ", response);
+          return "pen added ", response;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      //   }
+      //  }
+    });
+
+    /*   model_data = await markerCateroyModel.findById(_cat_id);
+
+      if (model_data != null) {
+        return Makers.findByIdAndUpdate(product_id, {
+          $set: {
+            root_folder_name: master_folder_name + "/products/",
+            file_name: file_name,
+          },
+        })
+          .then((response) => {
+            return "marker added ", response;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        return;
+      }
+ */
+
+    res.send({ message: "updated" });
+  }
+);
 
 xl.get("/insert-marker-category", async (req, res) => {
   let mrkr_ctg = await markerCateroyModel({
