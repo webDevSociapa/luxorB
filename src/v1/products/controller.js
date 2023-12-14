@@ -121,6 +121,25 @@ export async function getAllMasterPens() {
   }
 }
 
+export async function getPenById(_id) {
+  try {
+    let get_product = await Products.findById(_id);
+    let popular_pics;
+    if (get_product.category_type) {
+      popular_pics = await Products.find({
+        category_type: get_product.category_type,
+      });
+      if (popular_pics.length > 3) {
+        popular_pics = popular_pics.slice(0, 3);
+      }
+    }
+
+    return Promise.resolve({ product: get_product, popular_pics });
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
 export async function getAllCategories() {
   try {
     let all_cat_products = await categoryProductModel.find({});

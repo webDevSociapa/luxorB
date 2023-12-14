@@ -16,6 +16,7 @@ import {
   getAllGlobalProducts,
   addSubCategory,
   updateSubCategory,
+  getPenById,
 } from "./controller.js";
 let prd = express.Router();
 
@@ -145,6 +146,21 @@ prd.get("/get-all-pens", (req, res) => {
       res.send(fail_service_response(err));
     });
 });
+
+prd.get("/get-pen-by-id", (req, res) => {
+  const { _id } = req.query;
+  // console.log("_id-->", _id);
+  // console.log("cat_id-->", cat_type_id);
+
+  getPenById(_id)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
 prd.post("/get-product-by-id", (req, res) => {
   const { id } = req.body;
   getProductById(id)
