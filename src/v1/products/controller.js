@@ -121,6 +121,15 @@ export async function getAllMasterPens() {
   }
 }
 
+export async function deleteMasterPenById(id) {
+  try {
+    let deletedPen = await Products.findByIdAndDelete(id);
+    return Promise.resolve(deletedPen);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+
 export async function getPenById(_id) {
   try {
     let get_product = await Products.findById(_id);
@@ -144,6 +153,14 @@ export async function getAllCategories() {
   try {
     let all_cat_products = await categoryProductModel.find({});
     return Promise.resolve(all_cat_products);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
+export async function deleteCategory(id) {
+  try {
+    let deleted_category = await categoryProductModel.findByIdAndDelete(id);
+    return Promise.resolve(deleted_category);
   } catch (err) {
     return Promise.reject(err.message);
   }

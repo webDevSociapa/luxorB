@@ -17,11 +17,26 @@ import {
   addSubCategory,
   updateSubCategory,
   getPenById,
+  deleteMasterPenById,
+  deleteCategory,
 } from "./controller.js";
 let prd = express.Router();
 
+// get all categories new api
 prd.get("/get-all-categories", (req, res) => {
   getAllCategories()
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
+// delete a category
+prd.delete("/delete-category/:id", (req, res) => {
+  const { id } = req.params;
+  deleteCategory(id)
     .then((result) => {
       res.send(succes_service_response(result));
     })
@@ -137,8 +152,21 @@ prd.patch("/update-sub-category/:id", (req, res) => {
     });
 });
 
+//get all products from the global products
 prd.get("/get-all-pens", (req, res) => {
   getAllMasterPens()
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
+//to delete a product from the global products
+prd.delete("/delete-pen/:id", (req, res) => {
+  const { id } = req.params;
+  deleteMasterPenById(id)
     .then((result) => {
       res.send(succes_service_response(result));
     })
