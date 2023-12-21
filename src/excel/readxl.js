@@ -767,6 +767,108 @@ xl.post(
   }
 );
 
+//add-other images
+xl.post(
+  "/insert-cat-products-other-images",
+  upload.single("file"),
+  async (req, res) => {
+    //   console.log( req.body )
+    const { _cat_id, isOtherImage, product_id } = req.body;
+    console.log("data-->", _cat_id, product_id);
+    let data;
+    let master_folder_name;
+    data = await penCategoryModel.findById(_cat_id);
+
+    if (data) {
+      master_folder_name = data.master_folder_name;
+    } else {
+      data = await categoryProductModel.findById(_cat_id);
+      if (data != null) {
+        master_folder_name = data.product_folder_name;
+      }
+    }
+
+    let placed_file = req.file.destination + req.file.filename;
+    let file_name = req.file.originalname.split(".")[0] + Date.now() + ".jpg";
+
+    let new_folder_path = path.join(
+      __dirname,
+      "../../assets/" + master_folder_name + "/products" + "/other_images/"
+    );
+    let final_path = new_folder_path + file_name;
+
+    const color_variant_data = {
+      id: Math.floor(Math.random() * Date.now()).toString(16),
+      root_folder_name: master_folder_name + "/products" + "/other_images/",
+      file_name,
+      isOtherImage,
+    };
+
+    fses.move(placed_file, final_path, async function (err) {
+      if (err) throw err;
+
+      // let model_data;
+      // model_data = await penCategoryModel.findById(_cat_id);
+      // if (model_data != null) {
+      return Products.findByIdAndUpdate(product_id, {
+        // $set: {
+        //   root_folder_name: master_folder_name + "/products/",
+        //   file_name: file_name,
+        // },
+        $push: {
+          color_variant: color_variant_data,
+        },
+      })
+        .then((response) => {
+          console.log(" Successfully renamed - AKA moved! ", response);
+          return "pen added ", response;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      return;
+      // }
+
+      // model_data = await markerCateroyModel.findById(_cat_id);
+
+      // if (model_data != null) {
+      //   return Makers.findByIdAndUpdate(product_id, {
+      //     $set: {
+      //       root_folder_name:
+      //         master_folder_name + "/products" + "/color_variants/",
+      //       file_name: file_name,
+      //     },
+      //   })
+      //     .then((response) => {
+      //       return "marker added ", response;
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+
+      //   return;
+      // }
+
+      // MainCatProductModel.findByIdAndUpdate(product_id, {
+      //   $set: {
+      //     root_folder_name:
+      //       master_folder_name + "/products" + "/color_variants/",
+      //     file_name: file_name,
+      //   },
+      // })
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+    });
+
+    res.send({ message: "updated" });
+  }
+);
+
 xl.post(
   "/insert-cat-products-for-pen",
   upload.single("file"),
