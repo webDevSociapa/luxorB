@@ -317,3 +317,22 @@ export async function getSubCategoryById(category_id) {
     return Promise.reject(err.message);
   }
 }
+
+export async function addStampById(id, stampData) {
+  try {
+    const data = await Products.findById(id);
+    let addedStamp;
+    if (data) {
+      addedStamp = await Products.findByIdAndUpdate(id, {
+        $set: {
+          stamps: stampData,
+        },
+      });
+      return Promise.resolve(addedStamp);
+    } else {
+      throw new Error("not found");
+    }
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}

@@ -6,6 +6,7 @@ import {
   getPenByCategory,
   get_all_pen_category,
 } from "./controller.js";
+import { addStampById } from "../products/controller.js";
 let pen = express.Router();
 
 //get sub-categories new
@@ -33,6 +34,18 @@ pen.delete("/delete-pen-category/:id", (req, res) => {
 pen.get("/get-pen-by-category", (req, res) => {
   let _id = req.query.pen_ctg_id;
   getPenByCategory(_id)
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+
+pen.patch("/add-stamp/:id", (req, res) => {
+  let { id } = req.params;
+  let { stampData } = req.body;
+  addStampById(id, stampData)
     .then((result) => {
       res.send(succes_service_response(result));
     })
