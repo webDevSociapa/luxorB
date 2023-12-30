@@ -17,6 +17,7 @@ import mongoose from "mongoose";
 import multer from "multer";
 
 import * as fses from "fs-extra";
+import { careerModel } from "../models/careers.js";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -612,6 +613,53 @@ xl.post(
     res.send({ message: "updated" });
   }
 );
+
+//career-api
+xl.post("/send-career", upload.single("file"), async (req, res) => {
+  //   console.log( req.body )
+  const { name, email, contact, profile } = req.body;
+  //   console.log(req.file)
+
+  // const { product_folder_name } = data;
+
+  let placed_file = req.file.destination + req.file.filename;
+  let file_name = req.file.originalname.split(".")[0] + Date.now() + ".pdf";
+
+  let new_folder_path = path.join(
+    __dirname,
+    "../../assets/" + "career-resume" + "/"
+  );
+  let final_path = new_folder_path + file_name;
+
+  console.log("final-path->", final_path);
+
+  fses.move(placed_file, final_path, function (err) {
+    if (err) throw err;
+
+    careerModel
+      .create({
+        name,
+        email,
+        contactNumber: contact,
+        profile,
+        resume_folder_name: "career-resume" + "/",
+        file_name: file_name,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  res.send({ message: "Profile send sucessfully!" });
+});
+
+xl.get("/get-career-data", async (req, res) => {
+  const data = await careerModel.find({});
+  res.send({ data });
+});
 
 //   ----------for pen -------------------------
 
