@@ -656,7 +656,15 @@ xl.post("/send-career", upload.single("file"), async (req, res) => {
   res.send({ message: "Profile send sucessfully!" });
 });
 
-xl.get("/get-career-data", async (req, res) => {
+xl.get("/get-career-data/:pageSize/:pageNo", async (req, res) => {
+  const { pageNo, pageSize } = req.params;
+
+  const skipAmount = (pageNo - 1) * pageSize;
+  const total_data_count = await careerModel.find({}).count();
+  const data = await careerModel.find({}).skip(skipAmount).limit(pageSize);
+  res.send({ data, total_data_count });
+});
+xl.get("/get-all-career-data/", async (req, res) => {
   const data = await careerModel.find({});
   res.send({ data });
 });
