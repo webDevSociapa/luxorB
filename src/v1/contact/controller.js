@@ -39,6 +39,15 @@ export async function getContactListAll() {
     return Promise.reject(err.message);
   }
 }
+export async function exportAllContacts() {
+  try {
+    let get_contacts = await ContactModel.find({});
+
+    return Promise.resolve(get_contacts);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
 
 export async function submitContact(data) {
   try {

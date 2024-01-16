@@ -4,6 +4,7 @@ import xlsx from "node-xlsx";
 import fs from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import { Worker, isMainThread, parentPort } from "worker_threads";
 import {
   MainCatProductModel,
   Makers,
@@ -18,6 +19,7 @@ import multer from "multer";
 
 import * as fses from "fs-extra";
 import { careerModel } from "../models/careers.js";
+import { careerCSVModel } from "../models/careerCSV.js";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -667,6 +669,44 @@ xl.get("/get-career-data/:pageSize/:pageNo", async (req, res) => {
 xl.get("/get-all-career-data/", async (req, res) => {
   const data = await careerModel.find({});
   res.send({ data });
+});
+xl.get("/export-all-career-data/", async (req, res) => {
+  res.send({
+    message: "The file will be available in the 'Download icon' section soon.",
+  });
+
+  try {
+    const data = await careerModel.find({});
+
+    const worker = new Worker("./worker.js");
+
+    // Listen for messages from the web worker
+    worker.on("message", (message) => {
+      if (message === "done") {
+        // This will be executed when the web worker finishes its computation
+        console.log("Web worker finished");
+        worker.terminate();
+      }
+    });
+
+    // Start the web worker
+    worker.postMessage({
+      type: "start",
+      data: data,
+      sectionName: "career",
+    });
+  } catch (err) {
+    console.log("error-career-->", err);
+  }
+});
+
+xl.get("/get-all-career-csv", async (req, res) => {
+  try {
+    const data = await careerCSVModel.find({});
+    res.send({ data });
+  } catch (err) {
+    console.log("error->", err);
+  }
 });
 
 //   ----------for pen -------------------------
