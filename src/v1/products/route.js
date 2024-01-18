@@ -19,6 +19,7 @@ import {
   getPenById,
   deleteMasterPenById,
   deleteCategory,
+  getAllPensByPage,
 } from "./controller.js";
 let prd = express.Router();
 
@@ -155,6 +156,16 @@ prd.patch("/update-sub-category/:id", (req, res) => {
 //get all products from the global products
 prd.get("/get-all-pens", (req, res) => {
   getAllMasterPens()
+    .then((result) => {
+      res.send(succes_service_response(result));
+    })
+    .catch((err) => {
+      res.send(fail_service_response(err));
+    });
+});
+prd.get("/get-all-pens/:pageSize/:pageNo", (req, res) => {
+  const { pageSize, pageNo } = req.params;
+  getAllPensByPage(pageSize, pageNo)
     .then((result) => {
       res.send(succes_service_response(result));
     })

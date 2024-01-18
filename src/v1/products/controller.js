@@ -120,6 +120,16 @@ export async function getAllMasterPens() {
     return Promise.reject(err.message);
   }
 }
+export async function getAllPensByPage(pageSize, pageNo) {
+  try {
+    const skipAmount = (pageNo - 1) * pageSize;
+    let total_products_count = await Products.find({}).count();
+    let get_all_pens = await Products.find({}).skip(skipAmount).limit(pageSize);
+    return Promise.resolve({ get_all_pens, total_products_count });
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+}
 
 export async function deleteMasterPenById(id) {
   try {

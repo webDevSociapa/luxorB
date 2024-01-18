@@ -663,7 +663,11 @@ xl.get("/get-career-data/:pageSize/:pageNo", async (req, res) => {
 
   const skipAmount = (pageNo - 1) * pageSize;
   const total_data_count = await careerModel.find({}).count();
-  const data = await careerModel.find({}).skip(skipAmount).limit(pageSize);
+  const data = await careerModel
+    .find({})
+    .sort({ created_on: -1 })
+    .skip(skipAmount)
+    .limit(pageSize);
   res.send({ data, total_data_count });
 });
 xl.get("/get-all-career-data/", async (req, res) => {

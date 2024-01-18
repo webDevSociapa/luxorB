@@ -24,6 +24,7 @@ export async function getContactList(pageNo, pageSize) {
     let total_data_count = await ContactModel.find({}).count();
 
     let get_contacts_paginated = await ContactModel.find({})
+      .sort({ created_on: -1 })
       .skip(skipAmount)
       .limit(pageSize);
     return Promise.resolve({ get_contacts_paginated, total_data_count });
