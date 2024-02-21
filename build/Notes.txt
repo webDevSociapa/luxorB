@@ -1,0 +1,99 @@
+Notes
+
+fechaElaboracion,
+  institucionAsistencial,
+  direccionInst,
+  nombre,
+  edad,
+  lugarNacimiento,
+  fechaNacimiento,
+  sexo,
+  estadoCivil,
+  numeroHijos,
+  fechaIngreso,
+  ingresoRealizado,
+  nombrePersonaQueIngreso,
+  parentesco,
+  domicilio,
+  municipio,
+  estado,
+  telefono,
+  motivoIngreso,
+  fotografias,
+  huellas,
+  complexion,
+  estatura,
+  tez,
+  colorOjos,
+  ceja,
+  nariz,
+  boca,
+  cara,
+  idiomaOdialecto,
+  señasParticulares,
+  tipoSangre,
+  discapacidad,
+  tipoDiscapacidad,
+  enfermedad,
+  tratamientoEnfermedad,
+  nombreResponsable,
+  edadResponsable,
+  estadoCivilResponsable,
+  ocupacionResponsable,
+  telefonoResponsable,
+  domicilioResponsable,
+  originariodeResponsable,
+  tiempoEstadoResponsable,
+  religionResponsable,
+  identificacionResponsable,
+  situacionLegalResponsable,
+  actaNacimiento,
+  curp,
+  cartillaSalud,
+  identificacionAdulto,
+  valoracionMedica,
+  oficioAutoridad,
+  comprobanteSMedico,
+  comprobanteTipoSangre,
+  evaluacionesPsic,
+  nombreyFirmaResponsable
+
+
+az webapp deployment source config-zip --resource-group SeniorLife-NPRD --name SeniorLife-NPRD --src <PathToZipFile>
+
+
+please help me debug carefully by reading my server.js, confirmationpage.js and both terminal and browser logs:
+
+*server.js code is:
+*confirmationpage.js code is:
+*package.json code is:
+
+
+
+const db = mysql.createConnection({
+  host: "db-seniorlife.mysql.database.azure.com",
+  user: "adminsenior",
+  password: "Logged1234",
+  database: "seniorlife",
+  ssl: {
+    ca: fs.readFileSync("/Users/diego/Desktop/ssl-ca-crt.pem"),
+  },
+
+  const db = mysql.createConnection(process.env.MySqlConnectionString)
+
+axios.post("http://localhost:2550/api/upload", formToSubmit, { 
+
+
+        await axios.post(
+        "https://seniorlife-nprd.azurewebsites.net/api/upload",
+
+
+
+              await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/upload`,
+        formToSubmit,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
