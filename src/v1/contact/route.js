@@ -104,17 +104,11 @@ contact_router.post("/submit-contact", (req, res) => {
           console.log("Email sent successfully:", emailResult);
           // Here you can include any additional logic upon successful email submission.
           // For simplicity, this example immediately returns a success response.
-          res.send(
-            succes_service_response(
-              "Contact form submitted successfully and email sent."
-            )
-          );
+         
         })
         .catch((err) => {
           console.error("Error sending email:", err);
-          res
-            .status(500)
-            .send(fail_service_response("Failed to send the email."));
+         
         });
     })
     .catch((err) => {
