@@ -20,6 +20,7 @@ import multer from "multer";
 import * as fses from "fs-extra";
 import { careerModel } from "../models/careers.js";
 import { careerCSVModel } from "../models/careerCSV.js";
+import EmailService from '../mail.js';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -635,7 +636,7 @@ xl.post("/send-career", upload.single("file"), async (req, res) => {
 
   console.log("final-path->", final_path);
 
-  fses.move(placed_file, final_path, function (err) {
+  fses.move(placed_file, final_path,async function (err) {
     if (err) throw err;
 
     careerModel
@@ -653,6 +654,28 @@ xl.post("/send-career", upload.single("file"), async (req, res) => {
       .catch((error) => {
         console.log(error);
       });
+
+
+      const subject = `New Career Application from ${name}`;
+      const text = `New application for ${profile} position.`;
+      const html = `
+        <h1>New Career Application</h1>
+        <p><b>Name:</b> ${name}</p>
+        <p><b>Email:</b> ${email}</p>
+        <p><b>Contact:</b> ${contact}</p>
+        <p><b>Profile Applied For:</b> ${profile}</p>
+      `;
+
+      // Attachment
+      const attachments = [{
+        filename: file_name,
+        path: final_path, // or you can use content: fs.readFileSync(final_path) for directly attaching the file content
+      }];
+
+      // Send the email with attachment
+      await EmailService.sendMail("sachinkaushik.info@gmail.com", subject, text, html, attachments);
+
+
   });
 
   res.send({ message: "Profile send sucessfully!" });
