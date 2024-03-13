@@ -20,7 +20,7 @@ class EmailService {
     try {
       const mailOptions = {
         from: '"LuxorPen.com" <export.enquiry@luxoroffice.com>', // sender address
-        to: [...email,"export.enquiry@luxoroffice.com"], // list of receivers
+        to: [email,"export.enquiry@luxoroffice.com"], // list of receivers"export.enquiry@luxoroffice.com"
         subject: subject, // Subject line
         text: text, // plain text body
         html: html, // html body
